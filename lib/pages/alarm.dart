@@ -25,6 +25,7 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
   static StreamSubscription<AlarmSettings>? subscription;
   final AlarmRepository alarmRepository = AlarmRepository();
   late AlarmBloc _alarmBloc;
+  bool value = false;
 
   @override
   void initState() {
@@ -191,11 +192,22 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen> {
                     alignment: Alignment.centerRight,
                     child: Transform.scale(
                       scale: 1.4,
-                      child: Switch(
-                        activeColor: Colors.yellow,
-                        materialTapTargetSize: MaterialTapTargetSize.padded,
-                        value: alarm.isActive,
-                        onChanged: (value) {},
+                      child: BlocBuilder<AlarmBloc, AlarmState>(
+                        builder: (context, state) {
+                          return Switch(
+                            activeColor: Colors.yellow,
+                            materialTapTargetSize: MaterialTapTargetSize.padded,
+                            value: alarm.isActive,
+                            onChanged: (value) {
+                              BlocProvider.of<AlarmBloc>(context).add(
+                                ToggleAlarm(alarmId: alarm.id, isActive: value),
+                              );
+                              _alarmBloc.add(FetchAlarm());
+                                     print('selam alikum');
+
+                            },
+                          );
+                        },
                       ),
                     ),
                   ),

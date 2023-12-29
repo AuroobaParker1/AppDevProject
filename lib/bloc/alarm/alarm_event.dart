@@ -29,4 +29,13 @@ class DeleteAlarm extends AlarmEvent {
 
   @override
   List<Object> get props => [alarmId];
+} 
+class ToggleAlarm extends AlarmEvent {
+  final String alarmId;
+  final bool isActive;
+
+  const ToggleAlarm({required this.alarmId, required this.isActive});
+
+  @override
+  List<Object> get props => [alarmId, isActive];
 }

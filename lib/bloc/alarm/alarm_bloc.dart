@@ -11,6 +11,8 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
     on<FetchAlarm>(_onFetchAlarm);
     on<SetAlarm>(_onSetAlarm);
     on<DeleteAlarm>(_onDeleteAlarm);
+    on<ToggleAlarm>(_onToggleAlarm);
+
   }
 
   Future<void> _onFetchAlarm(FetchAlarm event, Emitter<AlarmState> emit) async {
@@ -48,4 +50,12 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
       emit(AlarmDeleteError(errorMsg: e.toString()));
     }
   }
+Future<void> _onToggleAlarm(ToggleAlarm event, Emitter<AlarmState> emit) async {
+  try {
+    await alarmRepository.toggleAlarmStatus(event.alarmId, event.isActive);
+    emit(AlarmToggled(alarmId: event.alarmId, isActive: event.isActive));
+  } catch (e) {
+    emit(AlarmError(errorMsg: e.toString()));
+  }
+}
 }

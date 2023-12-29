@@ -69,4 +69,29 @@ class AlarmRepository {
       }
     }
   }
+Future<void> toggleAlarmStatus(String alarmId, bool isActive) async {
+  User? user = _auth.currentUser;
+  if (user == null) throw Exception('User not authenticated');
+
+  DocumentReference userDocRef = _firestore.collection('alarms').doc(user.uid);
+
+  return _firestore.runTransaction((transaction) async {
+    DocumentSnapshot snapshot = await transaction.get(userDocRef);
+    if (!snapshot.exists) {
+      throw Exception('User alarm document not found');
+    }
+
+    List<dynamic> alarms = snapshot.get('alarmsz');
+    for (var alarm in alarms) {
+      if (alarm['id'] == alarmId) {
+        alarm['isActive'] = isActive;
+        break;
+      }
+    }
+
+    transaction.update(userDocRef, {'alarmsz': alarms});
+  });
+}
+
+
 }

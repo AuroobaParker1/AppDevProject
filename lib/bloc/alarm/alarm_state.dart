@@ -44,3 +44,14 @@ class AlarmDeleteError extends AlarmState {
   final String? errorMsg;
   AlarmDeleteError({this.errorMsg});
 }
+class AlarmToggled extends AlarmState {
+  final String alarmId;
+  final bool isActive;
+
+  const AlarmToggled({required this.alarmId, required this.isActive});
+
+  @override
+  List<Object> get props => [alarmId, isActive];
+}
+
+
