@@ -1,10 +1,15 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:aap_dev_project/models/report.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:encrypt/encrypt.dart' as encrypt;
 
 
+
+import '../../nodeBackend/aesKeyStorage.dart';
 import '../../nodeBackend/jwtStorage.dart';
 import '../../nodeBackend/upload_medical_record.dart';
 
@@ -28,17 +33,38 @@ class MedicalRecordsRepository {
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
         final List<MedicalRecord> records = [];
+        // Create an instance of FlutterSecureStorage
+          const storage = FlutterSecureStorage();
+
+           var aesKey = await retrieveAESKey();
+  final ivString = await storage.read(key: 'iv');
+
+  // Create an AES Encrypter with your key and IV
+  
+// Decode the IV string from base64
+final ivBytes = base64.decode(ivString!);
+ final iv = encrypt.IV(ivBytes);
+
+          // Use the same AES key and IV to create a decrypter
+          final decrypter = encrypt.Encrypter(encrypt.AES(aesKey!,mode:encrypt.AESMode.cbc));
+
        
-        for (final item in data) {
-           records.add(MedicalRecord.fromJson(item));
+        for (final item in data) { 
+          var temp = MedicalRecord.fromJson(item);
+          
+
+        
+          // Decrypt the image
+          var decryptedImage = decrypter.decryptBytes(encrypt.Encrypted(temp.data), iv: iv);
+
+          // Now, decryptedImage is a Uint8List containing the original, decrypted image bytes
+
+            temp.data = Uint8List.fromList(decryptedImage);
+
+
+
+           records.add(temp);
         }
-        // html.File test;
-        // for (final item in records) {
-        //   final blob = html.Blob([data]);
-        //   test = html.File([blob], item.filename, {'type': item.contentType});
-        //   print(test);
-        //   record2.add(UserReport(type: item.filename, image: test));
-        // }
 
         return records;
       } else {

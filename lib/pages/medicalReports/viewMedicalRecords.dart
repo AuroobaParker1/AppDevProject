@@ -35,10 +35,9 @@ late UserBloc _userBloc;
   @override
   void initState() {
     super.initState();
-    _recordsBloc = MedicalRecordsBloc(recordsRepository: recordsRepository);
+    _recordsBloc = BlocProvider.of<MedicalRecordsBloc>(context);
     _recordsBloc.add(const FetchRecord());
     _userBloc = BlocProvider.of<UserBloc>(context);
-    _userBloc.userProfile;
   }
 
   @override

@@ -15,4 +15,7 @@ router.get('/generate-link/', medicalRecordController.generateTemporaryLink);
 router.get('/temporary/:token', medicalRecordController.accessTemporaryLink);
 
 
+router.get('/generate-code', medicalRecordController.generateVerificationCode);
+router.post('/verify-code', medicalRecordController.verifyCodeAndRetrieveRecords);
+
 module.exports = router;

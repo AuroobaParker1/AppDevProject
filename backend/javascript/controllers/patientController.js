@@ -68,6 +68,8 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
     try {
+        const aesKey = generateAESKey();
+        
         const { email, password } = req.body;
         const patient = await Patient.findOne({ email });
         if (!patient) {
@@ -78,11 +80,17 @@ exports.login = async (req, res) => {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
         const token = jwt.sign({ userId: patient._id }, process.env.SECRET_KEY, { expiresIn: '1h' });
-        res.status(200).json({ token, expiresIn: 3600, userId: patient._id});
+        res.status(200).json({ token, expiresIn: 3600, userId: patient._id,aeskey: aesKey.toString('hex')});
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
+
+// Generate a random AES key
+const generateAESKey = () => {
+    return crypto.randomBytes(32); // 32 bytes for AES-256
+};
+
 
 exports.forgotPassword = async (req, res) => {
     try {
@@ -198,19 +206,11 @@ exports.UserInfo = async (req, res) => {
       if (!patient) {
         return res.status(404).json({ message: 'User not found' });
       }
-      const privateKey = patient.rsa_prikey;
+      
       const { encryptedAesKey , IV } = req.body;
+      patient.AESkey = encryptedAesKey;
 
-
-      const encryptedAesKeyBuffer = Buffer.from(encryptedAesKey, 'base64'); 
-      const base64KeyBack = encryptedAesKeyBuffer.toString('base64');
-
-      console.log(base64KeyBack);
-console.log('AES Key (Uint8List):', encryptedAesKeyBuffer);
-    // const decryptedAesKeyString = decryptedAesKeyBase64.toString('base64');
-
-    // Update the patient document with the decrypted AES key
-    // patient.AESkey = decryptedAesKeyString;
+      
     patient.iv = IV;
     await patient.save();
     res.status(200).json({ message: 'AES key stored successfully' });
@@ -220,63 +220,63 @@ console.log('AES Key (Uint8List):', encryptedAesKeyBuffer);
   }
 };
 
-  exports.storeEncryptedAESkey = async (req, res) => {
-    try {
-      // Call verifyToken middleware to authenticate the request
-      await verifyToken(req, res); 
+//   exports.storeEncryptedAESkey = async (req, res) => {
+//     try {
+//       // Call verifyToken middleware to authenticate the request
+//       await verifyToken(req, res); 
   
-      const userId = req.userId; // Access user ID attached by verifyToken
-      const patient = await Patient.findById(userId);
-      if (!patient) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-      const privateKey = patient.rsa_prikey;
-      const { encryptedAesKey , IV } = req.body;
+//       const userId = req.userId; // Access user ID attached by verifyToken
+//       const patient = await Patient.findById(userId);
+//       if (!patient) {
+//         return res.status(404).json({ message: 'User not found' });
+//       }
+//       const privateKey = patient.rsa_prikey;
+//       const { encryptedAesKey , IV } = req.body;
 
-      // Decrypt data with private key
-// Create a new NodeRSA instance with private key
-
-
-
-// Create a new NodeRSA instance with the private key
-const pkey = '-----BEGIN RSA PRIVATE KEY-----MIICWgIBAAKBgFKfEW2XqAMA0END2FN9tlNUxZXiWGdS5OeRhio/Tfw9d0L5d74bqGX8VWViapCJYm7UM5ZSY2UzqVFf/758fVVkutuQi3U79jCs3QwCfjVc4fmwX2BwicwTEySjahXyNA8aC92VUgLZz5cF9vdETkpgFVY64UVJ6inw3UB8oiLTAgMBAAECgYAlicARWuYq9yOobBrNVECSe+GJx90ClNcLn0Klzz1PbV3SQCX3afmI3Kyv85cXNFRUpnUJx0UBpgc3wbYghc8riGs/lD3ZRbsTV2cuasqx/mAqW3zRsqOo7X6hW0REmnh5ATqK79RnwSvikctTJxZS1VjIc2dHAp8jrlJXlTfuAQJBAJ/HCGQnRcOZCacZezAKSV07qjN0QCWo2mJ+r1/d0s6Efw1KiwJULP44kxEVPL/4VXv2Wmn41StPkPbXHoeWtrECQQCEYNdxMZWllXlmYOKEGkKVbzYTn335zzymeRfprC1qasCprl9HM45qe+JGMrWLRRbEqEm1QrnET7Xi3K0adxrDAkA7WjsywSf4PexJB30sXlXcbWKPVJrTooLlXbwV95fsoWl07YDv74b7NNbk3KfBhCV1NBFoFkhRm2/1UfoEUicxAkBznf0ssMjpuPYx05ajGChlSZ9qXhdx0m0/XG3lOerkkd45lMFEd6QAHrkO5IUo4Su0kOLnfCKxcYkDXgeWIMZvAkBDeXCQr/pePbAzUH8PJOj1M5+cZCcyg0O+EfYDE6iu2qpwLP54d85r2AiEZQ6yei/m7ku3uwPW2LCbKSZlrqXM-----END RSA PRIVATE KEY-----';
-const rsa = new NodeRSA(pkey, { encryptionScheme: 'pkcs1_oaep' });
+//       // Decrypt data with private key
+// // Create a new NodeRSA instance with private key
 
 
 
-    //   decrypt.setPrivateKey(privateKey);
-// Decrypt data with private key
-const decryptedAesKeyBase64 = rsa.decrypt(Buffer.from(encryptedAesKey, 'base64'), 'utf8');
+// // Create a new NodeRSA instance with the private key
+// const pkey = '-----BEGIN RSA PRIVATE KEY-----MIICWgIBAAKBgFKfEW2XqAMA0END2FN9tlNUxZXiWGdS5OeRhio/Tfw9d0L5d74bqGX8VWViapCJYm7UM5ZSY2UzqVFf/758fVVkutuQi3U79jCs3QwCfjVc4fmwX2BwicwTEySjahXyNA8aC92VUgLZz5cF9vdETkpgFVY64UVJ6inw3UB8oiLTAgMBAAECgYAlicARWuYq9yOobBrNVECSe+GJx90ClNcLn0Klzz1PbV3SQCX3afmI3Kyv85cXNFRUpnUJx0UBpgc3wbYghc8riGs/lD3ZRbsTV2cuasqx/mAqW3zRsqOo7X6hW0REmnh5ATqK79RnwSvikctTJxZS1VjIc2dHAp8jrlJXlTfuAQJBAJ/HCGQnRcOZCacZezAKSV07qjN0QCWo2mJ+r1/d0s6Efw1KiwJULP44kxEVPL/4VXv2Wmn41StPkPbXHoeWtrECQQCEYNdxMZWllXlmYOKEGkKVbzYTn335zzymeRfprC1qasCprl9HM45qe+JGMrWLRRbEqEm1QrnET7Xi3K0adxrDAkA7WjsywSf4PexJB30sXlXcbWKPVJrTooLlXbwV95fsoWl07YDv74b7NNbk3KfBhCV1NBFoFkhRm2/1UfoEUicxAkBznf0ssMjpuPYx05ajGChlSZ9qXhdx0m0/XG3lOerkkd45lMFEd6QAHrkO5IUo4Su0kOLnfCKxcYkDXgeWIMZvAkBDeXCQr/pePbAzUH8PJOj1M5+cZCcyg0O+EfYDE6iu2qpwLP54d85r2AiEZQ6yei/m7ku3uwPW2LCbKSZlrqXM-----END RSA PRIVATE KEY-----';
+// const rsa = new NodeRSA(pkey, { encryptionScheme: 'pkcs1_oaep' });
 
-console.log('Decrypted:', decryptedAesKeyBase64);
+
+
+//     //   decrypt.setPrivateKey(privateKey);
+// // Decrypt data with private key
+// const decryptedAesKeyBase64 = rsa.decrypt(Buffer.from(encryptedAesKey, 'base64'), 'utf8');
+
+// console.log('Decrypted:', decryptedAesKeyBase64);
   
 
-// // Convert the base64-encoded AES key to a Uint8List
-// const aesKey = Buffer.from(decryptedAesKeyBase64, 'base64');
+// // // Convert the base64-encoded AES key to a Uint8List
+// // const aesKey = Buffer.from(decryptedAesKeyBase64, 'base64');
 
 
-console.log('AES Key (Uint8List):', aesKey);
-    //   console.log(privateKey);
+// console.log('AES Key (Uint8List):', aesKey);
+//     //   console.log(privateKey);
 
-    // const encryptedAesKeyBuffer = Buffer.from(encryptedAesKey, 'base64');
-// console.log('Decoded AES Key Buffer:', encryptedAesKeyBuffer);
-//       const decryptedAesKey = crypto.privateDecrypt(
-//         {
-//           key: privateKey,
-//           padding: crypto.constants.RSA_PKCS1_PADDING,
-//         },
-//         Buffer.from(encryptedAesKey, 'base64') // Assuming the encrypted AES key is base64 encoded
-//       );
-    // Convert the decrypted AES key to a string
-    const decryptedAesKeyString = decryptedAesKeyBase64.toString('base64');
+//     // const encryptedAesKeyBuffer = Buffer.from(encryptedAesKey, 'base64');
+// // console.log('Decoded AES Key Buffer:', encryptedAesKeyBuffer);
+// //       const decryptedAesKey = crypto.privateDecrypt(
+// //         {
+// //           key: privateKey,
+// //           padding: crypto.constants.RSA_PKCS1_PADDING,
+// //         },
+// //         Buffer.from(encryptedAesKey, 'base64') // Assuming the encrypted AES key is base64 encoded
+// //       );
+//     // Convert the decrypted AES key to a string
+//     const decryptedAesKeyString = decryptedAesKeyBase64.toString('base64');
 
-    // Update the patient document with the decrypted AES key
-    patient.AESkey = decryptedAesKeyString;
-    patient.iv = IV;
-    await patient.save();
-    res.status(200).json({ message: 'AES key stored successfully' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'An error occurred' });
-  }
-};
+//     // Update the patient document with the decrypted AES key
+//     patient.AESkey = decryptedAesKeyString;
+//     patient.iv = IV;
+//     await patient.save();
+//     res.status(200).json({ message: 'AES key stored successfully' });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'An error occurred' });
+//   }
+// };

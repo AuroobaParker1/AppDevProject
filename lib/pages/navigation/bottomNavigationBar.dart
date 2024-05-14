@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 
 import '../home/dashboard.dart';
+import '../medicalReports/shareRecords.dart';
 import '../medicalReports/test.dart';
 
 class BaseMenuBar extends StatelessWidget {
@@ -80,8 +81,8 @@ class BaseMenuBar extends StatelessWidget {
       case 2://group
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MedicalRecordsPage()),
-          // MaterialPageRoute(builder: (context) => const ShareRecords()),
+          // MaterialPageRoute(builder: (context) => MedicalRecordsPage()),
+          MaterialPageRoute(builder: (context) => const ShareRecords()),
         );
         break;
         // case 2://group

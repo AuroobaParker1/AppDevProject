@@ -271,7 +271,7 @@ class _RegistrationScreenState extends State<RegistrationScreen>
       //   const SnackBar(content: Text("User successfully registered!")),
       // );
 
-      // // Token generation successful (optional: access token from state)
+      // // // Token generation successful (optional: access token from state)
       // Navigator.push(
       //   context,
       //   MaterialPageRoute(builder: (context) => DashboardApp()),

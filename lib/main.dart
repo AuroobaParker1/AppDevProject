@@ -1,7 +1,9 @@
 // ignore_for_file: duplicate_import, unused_import
 import 'package:aap_dev_project/bloc/alarm/alarm_bloc.dart';
+import 'package:aap_dev_project/bloc/medicalRecords/medicalRecords_block.dart';
 import 'package:aap_dev_project/bloc/user/user_block.dart';
 import 'package:aap_dev_project/core/repository/alarm_repo.dart';
+import 'package:aap_dev_project/core/repository/recordsSharing_repo.dart';
 import 'package:aap_dev_project/core/repository/user_repo.dart';
 import 'package:aap_dev_project/pages/reminder/medicine.dart';
 import 'package:aap_dev_project/pages/account/authentication.dart';
@@ -10,6 +12,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'bloc/recordShare/recordShare_block.dart';
+import 'core/repository/medicalRecords_repo.dart';
 import 'firebase/firebase_options.dart';
 import 'pages/account/register.dart';
 import 'pages/home/dashboard.dart';
@@ -27,6 +31,12 @@ void main() async {
         ),
         BlocProvider<UserBloc>( // Add your UserBloc provider here
           create: (context) => UserBloc(userRepository: UserRepository()), // Replace with your UserBloc implementation
+        ),
+        BlocProvider<MedicalRecordsBloc>( // Add your UserBloc provider here
+          create: (context) => MedicalRecordsBloc(recordsRepository:MedicalRecordsRepository()), // Replace with your UserBloc implementation
+        ),
+        BlocProvider<RecordShareBloc>( // Add your UserBloc provider here
+          create: (context) => RecordShareBloc(recordsRepository:RecordsSharingRepository()), // Replace with your UserBloc implementation
         ),
       ],
       child: const MyApp(),

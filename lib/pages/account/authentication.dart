@@ -23,9 +23,9 @@ class Authentication extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (FirebaseAuth.instance.currentUser != null) {
-      return DashboardApp();
-    }
+    // if (FirebaseAuth.instance.currentUser != null) {
+    //   return DashboardApp();
+    // }
 
     return Scaffold(
       backgroundColor: Colors.white,

@@ -34,7 +34,7 @@ class _ShareRecordsState extends State<ShareRecords> with RouteAware {
   @override
   void initState() {
     super.initState();
-    _recordsBloc = RecordShareBloc(recordsRepository: recordsRepository);
+    _recordsBloc = BlocProvider.of<RecordShareBloc>(context);
     _recordsBloc.add(const FetchRecord());
   }
 

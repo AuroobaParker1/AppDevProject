@@ -6,7 +6,7 @@ class MedicalRecord {
   final String contentType;
   final DateTime uploadDate;
   final int length;
-  final Uint8List data;
+  Uint8List data;
 
   MedicalRecord({
     required this.filename,
@@ -50,6 +50,30 @@ class UserReport {
       'image': image,
       
     };
+  }
+  
+  // Method to extract MIME type from the image file
+  String getMimeType() {
+    // Get the file path from the image File object
+    String filePath = image.path;
+
+    // Get the file extension from the file path
+    String fileExtension = filePath.split('.').last;
+
+    // Map common file extensions to MIME types
+    Map<String, String> mimeTypes = {
+      'jpg': 'image/jpeg',
+      'jpeg': 'image/jpeg',
+      'png': 'image/png',
+      'gif': 'image/gif',
+      // Add more mappings as needed
+    };
+
+    // Lookup the MIME type based on the file extension
+    String? mimeType = mimeTypes[fileExtension.toLowerCase()];
+
+    // Return the inferred MIME type or a default value
+    return mimeType ?? 'application/octet-stream';
   }
 }
 

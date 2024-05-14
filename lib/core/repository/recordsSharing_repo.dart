@@ -7,7 +7,7 @@ class RecordsSharingRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<List<UserSharing>> getSharedRecords() async {
+  Future<List<UserSharing>>getSharedRecords() async {
     DocumentSnapshot snapshot =
         await _firestore.collection('recordSharing').doc('efg').get();
     if (snapshot.exists) {

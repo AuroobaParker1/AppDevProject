@@ -56,8 +56,8 @@ class UserRepository {
      if (response.statusCode == 201) {
         var responseBody = jsonDecode(response.body);
         var wallet = responseBody['wallet'];
-            var rsaKeyPair = responseBody['rsaKeyPair'];
-    var publicKey = rsaKeyPair['publicKey'];
+
+
 
 
 const storage = FlutterSecureStorage();
@@ -67,11 +67,11 @@ const storage = FlutterSecureStorage();
 // To write
 await storage.write(key: 'wallet_privateKey', value: '${wallet['privateKey']}');
 await storage.write(key: 'wallet_address', value: '${wallet['address']}');
-await storage.write(key: 'rsa_publicKey', value: publicKey);
 
 
-await generateAndStoreAESKey(pass);
-    print( await storage.read(key: 'rsa_publicKey'));
+
+
+    
 
     } 
     else {
@@ -79,18 +79,24 @@ await generateAndStoreAESKey(pass);
     }
 
 
-    await loginUser(
+    var aesKey = await loginUser(
       email: userp.email,
       password: pass,
     );
-    await sendEncryptedAESKey();
+    if(aesKey != null){
+     await storeAESKey(aesKey);
+    }
+   await sendEncryptedAESKey();
   }
 Future<void> LoginUser_repo(
       {required String user_email, required String user_pass}) async {
-      await loginUser(
+       var aesKey = await loginUser(
       email: user_email,
       password: user_pass,
     );
+    if(aesKey != null){
+     await storeAESKey(aesKey);
+    }
   }
 
 

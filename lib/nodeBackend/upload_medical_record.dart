@@ -121,19 +121,21 @@ import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:http_parser/http_parser.dart';
 import '../models/report.dart';
 import 'aesKeyStorage.dart';
+import 'package:mime_type/mime_type.dart' as mime;
+
+import 'jwtStorage.dart';
 
 Future<void> uploadMedicalRecord(UserReport report) async {
-  // The URL of your Node.js backend endpoint
+  try{
+    // The URL of your Node.js backend endpoint
   var url = Uri.parse('http://192.168.100.84:3001/api/medical-records/upload');
 
   // Create a multipart request
   var request = http.MultipartRequest('POST', url);
 
-  // Add fields to the multipart request
-  request.fields['type'] = report.type;
 
   // Read the image file
-  var imageBytes = await File(report.image.path).readAsBytes();
+  var imageBytes = await report.image.readAsBytes();
 
 // Create an instance of FlutterSecureStorage
 const storage = FlutterSecureStorage();
@@ -143,28 +145,54 @@ const storage = FlutterSecureStorage();
 
   // Create an AES Encrypter with your key and IV
   
-  final iv = encrypt.IV.fromUtf8(ivString!);
-  final encrypter = encrypt.Encrypter(encrypt.AES(aesKey!));
+// Decode the IV string from base64
+final ivBytes = base64.decode(ivString!);
+
+
+  final iv = encrypt.IV(ivBytes);
+  final encrypter = encrypt.Encrypter(encrypt.AES(aesKey!,mode:encrypt.AESMode.cbc));
 
   // Encrypt the image
   final encryptedImage = encrypter.encryptBytes(imageBytes, iv: iv);
 
-  // Add the encrypted image to the multipart request
-  request.files.add(http.MultipartFile.fromBytes(
-    'image',
-    utf8.encode(encryptedImage.base64),
-    filename: basename(report.image.path),
-    contentType: MediaType('application', 'octet-stream'),
-  ));
+// // Determine the MIME type of the image bytes
+// String? mimeType = mime.mime(basename(report.image.path));
 
-  // Send the request
-  var response = await request.send();
+    // Retrieve the JWT token
+    final token = await retrieveJwtToken();
+
+// Create a file from the encrypted image bytes
+    var encryptedImageFile = http.MultipartFile.fromBytes(
+      'file',
+      encryptedImage.bytes,
+      filename: basename(report.image.path),
+      contentType: MediaType.parse(report.getMimeType()),
+    );
+
+
+      // Add the JWT token to the request headers
+      request.headers.addAll(<String, String>{
+        'Authorization': 'Bearer $token',
+      });
+
+  
+    // Add the encrypted image file to the multipart request
+    request.files.add(encryptedImageFile);
+
+   
+    // Send the request
+    var response = await request.send();
 
   // Check the status code of the response
-  if (response.statusCode == 200) {
+  if (response.statusCode == 201) {
     print('User report sent successfully');
   } else {
     print('Failed to send user report');
+  }
+  }
+  catch(e)
+  {
+    print('Failed to encrypt image: $e');
   }
 }
 

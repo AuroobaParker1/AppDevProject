@@ -15,6 +15,7 @@ import 'package:aap_dev_project/pages/navigation/bottomNavigationBar.dart';
 import 'package:aap_dev_project/pages/navigation/appDrawer.dart';
 
 void main() {
+  print("in dashboard page");
   runApp(DashboardApp());
 }
 
@@ -51,7 +52,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     super.initState();
     _userBloc = BlocProvider.of<UserBloc>(context);
 
+    
     _fetchData(); // Call the new method
+    
   }
 
   Future<void> _fetchData() async {
@@ -293,9 +296,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 })));
   }
 
-  @override
-  void dispose() {
-    _userBloc.close();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _userBloc.close();
+  //   super.dispose();
+  // }
 }

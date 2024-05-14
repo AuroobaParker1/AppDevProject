@@ -26,6 +26,8 @@ const initializeDatabase = async () => {
 
 // Call the async function
 initializeDatabase();
+const PORT = 3001;
+const HOST = '192.168.100.84'; // Change this to the desired IP address
 
 
 //localhost:3000/api/medical-records
@@ -33,6 +35,6 @@ initializeDatabase();
 app.use('/api/patients', patientRoutes);
 app.use('/api/medical-records',medicalRecordRoutes); // Include medical record routes
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+app.listen(PORT, HOST, () => {
+    console.log('Server is running on port 3001');
 });
