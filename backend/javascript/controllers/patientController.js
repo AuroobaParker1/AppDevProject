@@ -6,7 +6,7 @@ const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const Patient = require('../models/patient');
 // const register = require('../registerUser');
-const register_user = require('../blockchain_connection/register_user');
+const registerUser = require('../blockchain_connection/register_user');
 const verifyToken = require('./middleware/tokenauth'); // Assuming jwtVerify.js is in the same directory
 
 exports.signup = async (req, res) => {
@@ -31,8 +31,9 @@ exports.signup = async (req, res) => {
 
         const { name, email, mobileNumber, password } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
-        
-         const wallet = await register_user();
+        console.log(registerUser);
+
+         const wallet = await registerUser();
         // const x509Identity =  await register(email);
         const patient = new Patient({
             name,

@@ -117,11 +117,10 @@ class _AddReportState extends State<AddReport> with RouteAware {
                       child: IconButton(
                           icon:
                               const Icon(Icons.arrow_back, color: Colors.white),
-                          onPressed: () => Navigator.pushAndRemoveUntil(
+                          onPressed: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => DashboardApp()),
-                                ModalRoute.withName('/'),
                               )),
                     ),
                   ),

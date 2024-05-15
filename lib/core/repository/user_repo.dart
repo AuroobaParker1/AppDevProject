@@ -88,16 +88,29 @@ await storage.write(key: 'wallet_address', value: '${wallet['address']}');
     }
    await sendEncryptedAESKey();
   }
-Future<void> LoginUser_repo(
-      {required String user_email, required String user_pass}) async {
-       var aesKey = await loginUser(
+Future<bool> LoginUser_repo({
+  required String user_email,
+  required String user_pass,
+}) async {
+  try {
+    var aesKey = await loginUser(
       email: user_email,
       password: user_pass,
     );
-    if(aesKey != null){
-     await storeAESKey(aesKey);
+
+    if (aesKey != null) {
+      await storeAESKey(aesKey);
+      return true; // Login successful
+    } else {
+      return false; // Login failed
     }
+  } catch (e) {
+    // Handle the exception
+    print('Error: $e');
+    return false; // Login failed due to an error
   }
+}
+
 
 
 }

@@ -250,31 +250,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 FloatingActionButton.extended(
                   onPressed: () async {
                     try {
-                      await userRepository.LoginUser_repo(user_email: emailController.text, user_pass: passwordController.text);
-
-                      // UserCredential userCredential = await FirebaseAuth
-                      //     .instance
-                      //     .signInWithEmailAndPassword(
-                      //   email: emailController.text,
-                      //   password: passwordController.text,
-                      // );
-                      // Update status message on successful sign-in
-                      // Navigate to MedicineScreen
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => DashboardApp()),
+                      bool loginSuccess = await userRepository.LoginUser_repo(
+                        user_email: emailController.text,
+                        user_pass: passwordController.text,
                       );
-                    } on FirebaseAuthException catch (e) {
-                      // Update status message on error
-                      setState(() {
-                        if (e.code == 'user-not-found' ||
-                            e.code == 'invalid-credential' ||
-                            e.code == 'wrong-password') {
-                          signInStatus = 'Incorrect email or password';
-                        } else {
-                          signInStatus = e.code;
-                        }
-                      });
+
+                      if (loginSuccess) {
+                        // Navigate to DashboardApp if login is successful
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => DashboardApp()),
+                        );
+                      } else {
+                        // Show error dialog if login failed
+                        showLoginErrorDialog(context);
+                      }
+                    } catch (e) {
+                      // Handle any unexpected errors
+                      print('Error: $e');
+                      showLoginErrorDialog(context);
                     }
                   },
                   icon: const Icon(Icons.login),
@@ -362,4 +356,23 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+}
+void showLoginErrorDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Login Failed'),
+        content: Text('Invalid email or password. Please try again.'),
+        actions: [
+          TextButton(
+            child: Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
