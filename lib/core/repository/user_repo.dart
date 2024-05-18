@@ -65,8 +65,8 @@ const storage = FlutterSecureStorage();
 
 
 // To write
-await storage.write(key: 'wallet_privateKey', value: '${wallet['privateKey']}');
-await storage.write(key: 'wallet_address', value: '${wallet['address']}');
+// await storage.write(key: 'wallet_privateKey', value: '${wallet['privateKey']}');
+// await storage.write(key: 'wallet_address', value: '${wallet['address']}');
 
 
 

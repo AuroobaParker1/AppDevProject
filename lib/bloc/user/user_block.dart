@@ -64,8 +64,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   Future<void> setUser(UserProfile report,String password, Emitter<UserState> emit) async {
-    
-
     try {
       await userRepository.uploadUserRecords(userp:  report,pass:  password);
       emit(UserSetSuccess());

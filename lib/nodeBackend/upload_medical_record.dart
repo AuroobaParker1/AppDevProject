@@ -128,7 +128,7 @@ import 'jwtStorage.dart';
 Future<void> uploadMedicalRecord(UserReport report) async {
   try{
     // The URL of your Node.js backend endpoint
-  var url = Uri.parse('http://192.168.100.84:3001/api/medical-records/upload');
+  var url = Uri.parse('https://medqr-blockchain.onrender.com/api/medical-records/upload');
 
   // Create a multipart request
   var request = http.MultipartRequest('POST', url);

@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 
-const String baseUrl = 'http://192.168.100.84:3001/api/patients'; // Replace with your actual API endpoint
+const String baseUrl = 'https://medqr-blockchain.onrender.com/api/patients'; // Replace with your actual API endpoint
 
 Future<http.Response> getInfo({
   required String token,

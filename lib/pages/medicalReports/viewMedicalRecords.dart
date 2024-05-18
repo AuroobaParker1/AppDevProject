@@ -72,17 +72,17 @@ late UserBloc _userBloc;
                         child: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             child: Center(
-                              child: Text(
-                                    _userBloc.userProfile?.name != null
-                                        ? 'Medical Records of ${_userBloc.userProfile!.name}'
-                                        : 'Your Medical Records',
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  fontSize: 36.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
+                              // child: Text(
+                              //       // _userBloc.userProfile?.name != null
+                              //       //     ? 'Medical Records of ${_userBloc.userProfile!.name}'
+                              //       //     : 'Your Medical Records',
+                              //   textAlign: TextAlign.center,
+                              //   style: const TextStyle(
+                              //     fontSize: 36.0,
+                              //     fontWeight: FontWeight.bold,
+                              //     color: Colors.white,
+                              //   ),
+                              // ),
                             )),
                       ),
                       Positioned(

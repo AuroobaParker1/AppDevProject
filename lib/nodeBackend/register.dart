@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 const String baseUrl =
-    'http://192.168.100.84:3001/api/patients'; // Replace with your actual API endpoint
+    'https://medqr-blockchain.onrender.com/api/patients'; // Replace with your actual API endpoint
 
 Future<http.Response> signup(
     {required String name,

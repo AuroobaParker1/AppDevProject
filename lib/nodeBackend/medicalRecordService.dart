@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'jwtStorage.dart';
 
 class MedicalRecordService {
-  static const String baseUrl = 'http://192.168.100.84:3001/api/medical-records';
+  static const String baseUrl = 'https://medqr-blockchain.onrender.com/api/medical-records';
 
   static Future<Map<String, dynamic>> generateVerificationCode(String email) async {
     // Retrieve the JWT token

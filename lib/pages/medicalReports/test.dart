@@ -19,7 +19,7 @@ class _MedicalRecordsPageState extends State<MedicalRecordsPage> {
   try {
     var token = await retrieveJwtToken();
     final response = await http.get(
-      Uri.parse('http://192.168.100.84:3001/api/medical-records/generate-link'),
+      Uri.parse('https://medqr-blockchain.onrender.com/api/medical-records/generate-link'),
       headers: {'Authorization': 'Bearer $token'},
     );
     if (response.statusCode == 200) {

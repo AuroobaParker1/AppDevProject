@@ -267,15 +267,15 @@ class _RegistrationScreenState extends State<RegistrationScreen>
       ));
 
       // Registration successful
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   const SnackBar(content: Text("User successfully registered!")),
-      // );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("User successfully registered!")),
+      );
 
-      // // // Token generation successful (optional: access token from state)
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => DashboardApp()),
-      // );
+      // // Token generation successful (optional: access token from state)
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => DashboardApp()),
+      );
 
       // // You might want to navigate the user to a different screen after successful registration
     } on FirebaseAuthException catch (e) {

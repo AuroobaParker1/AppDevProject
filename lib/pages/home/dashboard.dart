@@ -59,7 +59,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Future<void> _fetchData() async {
     String? token = await retrieveJwtToken();
-    
+    print("token is $token");
     if (token != null) {
       _userBloc.add(FetchUserData(jwtToken: token));
     } else {
@@ -91,6 +91,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     return const Center(child: CircularProgressIndicator());
                   }
                   if (state is UserLoaded) {
+                    print(state.user.name);
                     return SingleChildScrollView(
                         child: Column(
                       children: [

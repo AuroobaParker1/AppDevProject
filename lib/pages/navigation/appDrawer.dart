@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/user/user_block.dart';
 import '../../bloc/user/user_state.dart';
 import '../../core/repository/user_repo.dart';
+import '../../nodeBackend/jwtStorage.dart';
 import '../account/authentication.dart';
 import '../drawerOptions/aboutUs.dart';
 import '../drawerOptions/help.dart';
@@ -40,7 +41,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
 
   Future<void> signOut() async {
-    await FirebaseAuth.instance.signOut();
+  await deleteJwtToken();
   }
 
   @override
@@ -138,9 +139,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
         });
   }
 
-  @override
-  void dispose() {
-    _userBloc.close();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _userBloc.close();
+  //   super.dispose();
+  // }
 }
