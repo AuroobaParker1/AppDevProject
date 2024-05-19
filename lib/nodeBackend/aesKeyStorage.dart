@@ -12,6 +12,7 @@ import 'package:pointycastle/export.dart' as pc;
 import 'dart:math';
 // import 'package:pointycastle/pointycastle.dart';
 import 'jwtStorage.dart';
+import 'package:aap_dev_project/util/constant.dart'as constants;
 
 Future<void> storeAESKey(String aesKey) async {
   try {
@@ -90,7 +91,7 @@ Future<void> sendEncryptedAESKey() async {
 
     // Send the encrypted AES key to the Node.js server
     final response = await http.post(
-      Uri.parse('https://medqr-blockchain.onrender.com/api/patients/storeAESkey'), // Replace with your actual API endpoint
+      Uri.parse('${constants.ip}/api/patients/storeAESkey'), // Replace with your actual API endpoint
       headers: {
         'Content-Type': 'application/json',
          'Authorization': 'Bearer $token',

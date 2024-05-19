@@ -92,7 +92,7 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                 verifyOTPAndChangePassword();
               },
               style: ElevatedButton.styleFrom(
-                primary: const Color(0xFF01888B),
+                backgroundColor: const Color(0xFF01888B),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),

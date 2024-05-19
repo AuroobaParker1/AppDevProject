@@ -239,11 +239,6 @@ class DisplaySelectedImage extends StatelessWidget {
     }
 
     
-    // Reference storageReference3451 =
-    //     FirebaseStorage.instance.ref().child(generateRandomName());
-    // TaskSnapshot uploadTask =
-    //     await storageReference.putFile(File(selectedImage.path));
-    // String imageUrl = await uploadTask.ref.getDownloadURL();
     _recordsBloc.add(SetRecord(
       report: UserReport(
         type: reportTypeController.text,

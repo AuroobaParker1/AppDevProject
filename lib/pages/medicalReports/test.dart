@@ -4,6 +4,7 @@ import 'package:aap_dev_project/nodeBackend/jwtStorage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:aap_dev_project/util/constant.dart'as constants;
 
 
 class MedicalRecordsPage extends StatefulWidget {
@@ -19,7 +20,7 @@ class _MedicalRecordsPageState extends State<MedicalRecordsPage> {
   try {
     var token = await retrieveJwtToken();
     final response = await http.get(
-      Uri.parse('https://medqr-blockchain.onrender.com/api/medical-records/generate-link'),
+      Uri.parse('${constants.ip}/api/medical-records/generate-link'),
       headers: {'Authorization': 'Bearer $token'},
     );
     if (response.statusCode == 200) {

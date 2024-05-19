@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:aap_dev_project/util/constant.dart'as constants;
 
 import 'jwtStorage.dart';
 
 class MedicalRecordService {
-  static const String baseUrl = 'https://medqr-blockchain.onrender.com/api/medical-records';
+  static const String baseUrl = '${constants.ip}/api/medical-records';
 
   static Future<Map<String, dynamic>> generateVerificationCode(String email) async {
     // Retrieve the JWT token

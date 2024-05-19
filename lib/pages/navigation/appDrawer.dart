@@ -1,6 +1,6 @@
 // ignore_for_file: file_names, library_private_types_in_public_api, avoid_print, unnecessary_cast
 
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -119,9 +119,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     title: const Text('Logout'),
                     onTap: () {
                       signOut().then((_) {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                              builder: (context) => const Authentication()),
+                        // Navigator.of(context).pushReplacement(
+                        //   MaterialPageRoute(
+                        //       builder: (context) => const Authentication()),
+                        // );
+                        // Navigate to login screen
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => const Authentication()),
+                          (Route<dynamic> route) => false,
                         );
                       }).catchError((error) {
                         print("Error signing out: $error");

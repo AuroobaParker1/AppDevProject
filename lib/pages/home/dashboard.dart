@@ -14,28 +14,16 @@ import 'package:url_launcher/url_launcher_string.dart';
 import 'package:aap_dev_project/pages/navigation/bottomNavigationBar.dart';
 import 'package:aap_dev_project/pages/navigation/appDrawer.dart';
 
-void main() {
-  print("in dashboard page");
-  runApp(DashboardApp());
-}
-
 class DashboardApp extends StatelessWidget {
-  DashboardApp({super.key});
-  final UserRepository userRepository = UserRepository();
+  const DashboardApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Dashboard Example',
-      home: DashboardScreen(userRepository: userRepository),
-      theme: ThemeData(
-        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: Colors.transparent,
-        ),
-      ),
-    );
+    final UserRepository userRepository = UserRepository();
+    return DashboardScreen(userRepository: userRepository);
   }
 }
+
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key, required this.userRepository});

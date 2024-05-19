@@ -7,14 +7,12 @@ import 'package:aap_dev_project/bloc/user/user_event.dart';
 import 'package:aap_dev_project/core/repository/user_repo.dart';
 import 'package:aap_dev_project/models/user.dart';
 import 'package:aap_dev_project/pages/account/authentication.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:aap_dev_project/pages/home/dashboard.dart';
 
 import '../../bloc/user/user_state.dart';
@@ -42,44 +40,13 @@ class _RegistrationScreenState extends State<RegistrationScreen>
     _userBloc = BlocProvider.of<UserBloc>(context);
   }
 
-  Future<UserCredential?> signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      if (googleUser == null) return null;
-
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
-
-      // Show success message
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Signed in with Google Successfully!")),
-      );
-
-      return userCredential;
-    } catch (e) {
-      print(e.toString());
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text("Failed to sign in with Google: ${e.toString()}")),
-      );
-      return null;
-    }
-  }
-
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _mobileController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   bool _obscureText = true;
 
   @override
@@ -94,7 +61,7 @@ class _RegistrationScreenState extends State<RegistrationScreen>
       // Token generation successful (optional: access token from state)
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => DashboardApp()),
+        MaterialPageRoute(builder: (context) => const AuthenticatedWrapper()),
       );
 
      
@@ -271,17 +238,17 @@ class _RegistrationScreenState extends State<RegistrationScreen>
         const SnackBar(content: Text("User successfully registered!")),
       );
 
-      // // Token generation successful (optional: access token from state)
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => DashboardApp()),
-      );
+      // // // Token generation successful (optional: access token from state)
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => DashboardApp()),
+      // );
 
       // // You might want to navigate the user to a different screen after successful registration
-    } on FirebaseAuthException catch (e) {
+    }  catch (e) {
       // Handle registration errors
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to register: ${e.message}")),
+        SnackBar(content: Text("Failed to register: ${e.toString()}")),
       );
     }
   }

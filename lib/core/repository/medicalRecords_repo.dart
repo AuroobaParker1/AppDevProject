@@ -2,12 +2,13 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:aap_dev_project/models/report.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:encrypt/encrypt.dart' as encrypt;
 
 
+import 'package:aap_dev_project/util/constant.dart'as constants;
 
 import '../../nodeBackend/aesKeyStorage.dart';
 import '../../nodeBackend/jwtStorage.dart';
@@ -26,7 +27,7 @@ class MedicalRecordsRepository {
       }
 
       final response = await http.get(
-        Uri.parse('https://medqr-blockchain.onrender.com/api/medical-records/patient'),
+        Uri.parse('${constants.ip}/api/medical-records/patient'),
         headers: {'Authorization': 'Bearer $token'},
       );
 

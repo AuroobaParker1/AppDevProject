@@ -184,9 +184,9 @@ late UserBloc _userBloc;
             }));
   }
 
-  @override
-  void dispose() {
-    _recordsBloc.close();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _recordsBloc.close();
+  //   super.dispose();
+  // }
 }

@@ -122,13 +122,13 @@ import 'package:http_parser/http_parser.dart';
 import '../models/report.dart';
 import 'aesKeyStorage.dart';
 import 'package:mime_type/mime_type.dart' as mime;
-
+import 'package:aap_dev_project/util/constant.dart'as constants;
 import 'jwtStorage.dart';
 
 Future<void> uploadMedicalRecord(UserReport report) async {
   try{
     // The URL of your Node.js backend endpoint
-  var url = Uri.parse('https://medqr-blockchain.onrender.com/api/medical-records/upload');
+  var url = Uri.parse('${constants.ip}/api/medical-records/upload');
 
   // Create a multipart request
   var request = http.MultipartRequest('POST', url);

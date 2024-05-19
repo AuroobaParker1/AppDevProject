@@ -203,7 +203,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
                 resetPassword(_emailController.text);
               },
               style: ElevatedButton.styleFrom(
-                primary: const Color(0xFF01888B),
+                backgroundColor: const Color(0xFF01888B),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
