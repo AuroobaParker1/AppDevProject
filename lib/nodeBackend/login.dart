@@ -40,30 +40,32 @@ Future<http.Response> login({
   );
 }
 
-Future<String?> loginUser({required String email, required String password}) async {
+Future<bool?> loginUser({required String email, required String password}) async {
   try {
     final response = await login(email: email, password: password);
     print(response.body);
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       final token = data['token'];
-      final key = data['aeskey'];
+      var key = data['aesKey'];
+      var iv = data['iv'];
       // Store token in SharedPreferences securely
       await storeJwtToken(token);
+      await storeAESKey(key,iv);
      
       // Handle successful login (e.g., navigate to a different screen)
       print('Login successful! Token stored in SharedPreferences.');
 
-      return key;
+      return true;
     } else {
       // Handle login failure gracefully (e.g., display error message)
       print('Login failed: ${response.statusCode} - ${response.body}');
-      return null;
+      return false;
     }
   } catch (error) {
     // Handle errors during login request (e.g., network issues)
     print('Error during login: $error');
-    return null;
+    return false;
   }
 }
 

@@ -222,13 +222,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   height: 80,
                                   child: FloatingActionButton.extended(
                                     onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const AlarmHomeScreen(),
-                                        ),
-                                      );
+                                      // Navigator.push(
+                                      //   context,
+                                      //   MaterialPageRoute(
+                                      //     builder: (context) =>
+                                      //         // const AlarmHomeScreen(),
+                                      //   ),
+                                      // );
                                     },
                                     label: const Text(
                                       'Alarm',

@@ -14,27 +14,23 @@ import 'dart:math';
 import 'jwtStorage.dart';
 import 'package:aap_dev_project/util/constant.dart'as constants;
 
-Future<void> storeAESKey(String aesKey) async {
+Future<void> storeAESKey(String aesKey, String iv) async {
   try {
     // Create an instance of FlutterSecureStorage
     const storage =  FlutterSecureStorage();
 
   Uint8List aesKeyBytes = Uint8List.fromList(hex.decode(aesKey));
-
+  Uint8List ivKeyBytes = Uint8List.fromList(hex.decode(iv));
 
 // Convert the Uint8List to a base64 string
 String aesKeyBase64 = base64.encode(aesKeyBytes);
+String ivBase64 = base64.encode(ivKeyBytes);
 
 
-    // Create an AES encrypter with the key
-    final iv = IV.fromSecureRandom(16); // Generate a random IV
-    // final encrypter = Encrypter(AES(key, mode: AESMode.cbc));
-
-    // Convert the IV to a string
-    final ivString = base64.encode(iv.bytes);
+ 
 
     // Store the IV string in secure storage
-    await storage.write(key: 'iv', value: ivString);
+    await storage.write(key: 'iv', value: ivBase64);
 
     // Store the key and salt in secure storage
     await storage.write(key: 'aesKey', value:aesKeyBase64);

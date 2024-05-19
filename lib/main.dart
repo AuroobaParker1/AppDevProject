@@ -2,7 +2,6 @@
 import 'package:aap_dev_project/bloc/alarm/alarm_bloc.dart';
 import 'package:aap_dev_project/bloc/medicalRecords/medicalRecords_block.dart';
 import 'package:aap_dev_project/bloc/user/user_block.dart';
-import 'package:aap_dev_project/core/repository/alarm_repo.dart';
 import 'package:aap_dev_project/core/repository/recordsSharing_repo.dart';
 import 'package:aap_dev_project/core/repository/user_repo.dart';
 import 'package:aap_dev_project/pages/reminder/medicine.dart';
@@ -19,18 +18,18 @@ void main() async {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider<AlarmBloc>(
-          create: (context) => AlarmBloc(alarmRepository: AlarmRepository()),
-        ),
+        // BlocProvider<AlarmBloc>(
+        //   create: (context) => AlarmBloc(alarmRepository: AlarmRepository()),
+        // ),
         BlocProvider<UserBloc>( // Add your UserBloc provider here
           create: (context) => UserBloc(userRepository: UserRepository()), // Replace with your UserBloc implementation
         ),
         BlocProvider<MedicalRecordsBloc>( // Add your UserBloc provider here
           create: (context) => MedicalRecordsBloc(recordsRepository:MedicalRecordsRepository()), // Replace with your UserBloc implementation
         ),
-        BlocProvider<RecordShareBloc>( // Add your UserBloc provider here
-          create: (context) => RecordShareBloc(recordsRepository:RecordsSharingRepository()), // Replace with your UserBloc implementation
-        ),
+        // BlocProvider<RecordShareBloc>( // Add your UserBloc provider here
+        //   create: (context) => RecordShareBloc(recordsRepository:RecordsSharingRepository()), // Replace with your UserBloc implementation
+        // ),
       ],
       child: const MyApp(),
     ),
@@ -56,7 +55,12 @@ class MyApp extends StatelessWidget {
       ),
       
       home: const Authentication(),
-      
+//       home: Scaffold(
+//   body: Center(
+//     child: Text('Test screen'),
+//   ),
+// ),
+
     );
   }
 }
