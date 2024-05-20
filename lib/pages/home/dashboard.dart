@@ -13,8 +13,6 @@ import 'package:url_launcher/url_launcher_string.dart';
 import 'package:aap_dev_project/pages/navigation/bottomNavigationBar.dart';
 import 'package:aap_dev_project/pages/navigation/appDrawer.dart';
 
-import '../reminder/alarm.dart';
-
 class DashboardApp extends StatelessWidget {
   const DashboardApp({super.key});
 
@@ -223,13 +221,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   height: 80,
                                   child: FloatingActionButton.extended(
                                     onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const AlarmHomeScreen(),
-                                        ),
-                                      );
+                                      // Navigator.push(
+                                      //   context,
+                                      //   MaterialPageRoute(
+                                      //     builder: (context) =>
+                                      //         // const AlarmHomeScreen(),
+                                      //   ),
+                                      // );
                                     },
                                     label: const Text(
                                       'Alarm',

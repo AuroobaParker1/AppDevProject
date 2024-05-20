@@ -8,7 +8,7 @@ import 'package:aap_dev_project/pages/reminder/medicine.dart';
 import 'package:aap_dev_project/pages/account/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'bloc/recordShare/recordShare_bloc.dart';
+import 'bloc/recordShare/recordShare_block.dart';
 import 'core/repository/medicalRecords_repo.dart';
 import 'pages/account/register.dart';
 import 'pages/home/dashboard.dart';
@@ -24,9 +24,9 @@ void main() async {
         BlocProvider<UserBloc>( // Add your UserBloc provider here
           create: (context) => UserBloc(userRepository: UserRepository()), // Replace with your UserBloc implementation
         ),
-        // BlocProvider<MedicalRecordsBloc>( // Add your UserBloc provider here
-        //   create: (context) => MedicalRecordsBloc(recordsRepository:MedicalRecordsRepository()), // Replace with your UserBloc implementation
-        // ),
+        BlocProvider<MedicalRecordsBloc>( // Add your UserBloc provider here
+          create: (context) => MedicalRecordsBloc(recordsRepository:MedicalRecordsRepository()), // Replace with your UserBloc implementation
+        ),
         // BlocProvider<RecordShareBloc>( // Add your UserBloc provider here
         //   create: (context) => RecordShareBloc(recordsRepository:RecordsSharingRepository()), // Replace with your UserBloc implementation
         // ),

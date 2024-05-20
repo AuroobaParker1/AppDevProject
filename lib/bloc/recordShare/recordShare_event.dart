@@ -1,26 +1,28 @@
 import 'package:equatable/equatable.dart';
 
-abstract class MedicalRecordEvent extends Equatable {
-  const MedicalRecordEvent();
-
-  @override
-  List<Object> get props => [];
+abstract class RecordEvent extends Equatable {
+  const RecordEvent([List props = const []]) : super();
 }
 
-class GenerateVerificationCode extends MedicalRecordEvent {
-  final String email;
-
-  const GenerateVerificationCode(this.email);
+class FetchRecord extends RecordEvent {
+  const FetchRecord() : super();
 
   @override
-  List<Object> get props => [email];
+  List<Object?> get props => throw UnimplementedError();
 }
 
-class VerifyCodeAndRetrieveRecords extends MedicalRecordEvent {
+class AddRecord extends RecordEvent {
   final String code;
 
-  const VerifyCodeAndRetrieveRecords(this.code);
+  const AddRecord({required this.code});
 
   @override
   List<Object> get props => [code];
+}
+
+class RemoveRecord extends RecordEvent {
+  const RemoveRecord();
+
+  @override
+  List<Object> get props => [];
 }

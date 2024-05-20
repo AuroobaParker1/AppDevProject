@@ -27,7 +27,7 @@ class MedicalRecordsRepository {
 //       }
 
 //       final response = await http.get(
-//         Uri.parse('${constants.url}/api/medical-records/patient'),
+//         Uri.parse('${constants.ip}/api/medical-records/patient'),
 //         headers: {'Authorization': 'Bearer $token'},
 //       );
 
@@ -87,7 +87,7 @@ Future<List<MedicalRecord>> getUserRecords() async {
     }
 
     final response = await http.get(
-      Uri.parse('${constants.url}/api/medical-records/patient'),
+      Uri.parse('${constants.ip}/api/medical-records/patient'),
       headers: {'Authorization': 'Bearer $token'},
     );
 

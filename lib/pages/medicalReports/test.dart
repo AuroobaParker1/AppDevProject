@@ -20,7 +20,7 @@ class _MedicalRecordsPageState extends State<MedicalRecordsPage> {
   try {
     var token = await retrieveJwtToken();
     final response = await http.get(
-      Uri.parse('${constants.url}/api/medical-records/generate-link'),
+      Uri.parse('${constants.ip}/api/medical-records/generate-link'),
       headers: {'Authorization': 'Bearer $token'},
     );
     if (response.statusCode == 200) {
