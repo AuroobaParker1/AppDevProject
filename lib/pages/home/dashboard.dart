@@ -7,7 +7,6 @@ import 'package:aap_dev_project/core/repository/user_repo.dart';
 import 'package:aap_dev_project/nodeBackend/jwtStorage.dart';
 import 'package:aap_dev_project/pages/medicalReports/addMedicalRecord.dart';
 import 'package:aap_dev_project/pages/medicalReports/viewMedicalRecords.dart';
-import 'package:aap_dev_project/pages/reminder/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher_string.dart';

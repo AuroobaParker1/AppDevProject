@@ -46,20 +46,21 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> with RouteAware {
   }
 
   Future<void> _pickImage(user) async {
-    final XFile? pickedFile =
-        await _picker.pickImage(source: ImageSource.gallery);
+    
+    // final XFile? pickedFile =
+    //     await _picker.pickImage(source: ImageSource.gallery);
 
-    if (pickedFile != null) {
-      Reference storageReference =
-          FirebaseStorage.instance.ref().child('user_images/${user.uid}');
-      TaskSnapshot uploadTask =
-          await storageReference.putFile(File(pickedFile.path));
-      String imageUrl = await uploadTask.ref.getDownloadURL();
-      // Update the image controller text and setState to rebuild UI
-      setState(() {
-        _imageController.text = imageUrl;
-      });
-    }
+    // if (pickedFile != null) {
+    //   Reference storageReference =
+    //       FirebaseStorage.instance.ref().child('user_images/${user.uid}');
+    //   TaskSnapshot uploadTask =
+    //       await storageReference.putFile(File(pickedFile.path));
+    //   String imageUrl = await uploadTask.ref.getDownloadURL();
+    //   // Update the image controller text and setState to rebuild UI
+    //   setState(() {
+    //     _imageController.text = imageUrl;
+    //   });
+    // }
   }
 
   @override

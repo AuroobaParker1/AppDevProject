@@ -1,30 +1,28 @@
 import 'dart:convert';
-import 'dart:typed_data';
-import 'package:encrypt/encrypt.dart';
+
+
 import 'package:http/http.dart' as http;
-import 'package:bip39/bip39.dart' as bip39;
-import 'package:bip32/bip32.dart' as bip32;
-import 'package:crypto/crypto.dart';
-import 'package:convert/convert.dart'; // Add this import statement
+
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
-import 'package:pointycastle/export.dart' as pc;
+
 import 'dart:math';
 // import 'package:pointycastle/pointycastle.dart';
 import 'jwtStorage.dart';
 import 'package:aap_dev_project/util/constant.dart'as constants;
 
-Future<void> storeAESKey(String aesKey, String iv) async {
+Future<void> storeAESKey(String aesKeyBase64, String ivBase64) async {
   try {
     // Create an instance of FlutterSecureStorage
     const storage =  FlutterSecureStorage();
 
-  Uint8List aesKeyBytes = Uint8List.fromList(hex.decode(aesKey));
-  Uint8List ivKeyBytes = Uint8List.fromList(hex.decode(iv));
+//   Uint8List aesKeyBytes = Uint8List.fromList(hex.decode(aesKey));
+//   Uint8List ivKeyBytes = Uint8List.fromList(hex.decode(iv));
 
-// Convert the Uint8List to a base64 string
-String aesKeyBase64 = base64.encode(aesKeyBytes);
-String ivBase64 = base64.encode(ivKeyBytes);
+// // Convert the Uint8List to a base64 string
+// String aesKeyBase64 = base64.encode(aesKeyBytes);
+// String ivBase64 = base64.encode(ivKeyBytes);
 
 
  

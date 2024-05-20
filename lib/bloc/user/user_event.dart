@@ -1,5 +1,4 @@
 import 'package:aap_dev_project/models/user.dart';
-import 'package:equatable/equatable.dart';
 
 // abstract class UserEvent extends Equatable {
 //   const UserEvent([List props = const []]) : super();

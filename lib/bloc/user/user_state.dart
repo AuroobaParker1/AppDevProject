@@ -1,5 +1,4 @@
 import 'package:aap_dev_project/models/user.dart';
-import 'package:equatable/equatable.dart';
 
 // abstract class UserState extends Equatable {
 //   const UserState([List props = const []]) : super();

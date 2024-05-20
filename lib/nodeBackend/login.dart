@@ -2,22 +2,14 @@ import 'dart:math';
 
 import 'package:aap_dev_project/nodeBackend/jwtStorage.dart';
 import 'package:http/http.dart' as http;
-import 'package:pointycastle/export.dart';
+
 import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:pointycastle/api.dart' as crypto;
-import 'package:pointycastle/key_generators/rsa_key_generator.dart';
-import 'package:pointycastle/key_generators/api.dart';
-import 'package:asn1lib/asn1lib.dart';
-import 'dart:convert';
-import 'dart:typed_data';
-import 'package:encrypt/encrypt.dart';
 
 
 import 'package:aap_dev_project/util/constant.dart'as constants;
 
 import 'aesKeyStorage.dart';
-import 'fix_secure.dart';
+
 
  const String baseUrl = '${constants.ip}/api/patients'; // Replace with your actual API endpoint
  

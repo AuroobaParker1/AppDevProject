@@ -1,5 +1,4 @@
 import 'package:aap_dev_project/models/report.dart';
-import 'package:equatable/equatable.dart';
 
 abstract class RecordEvent{
   const RecordEvent([List props = const []]) : super();
