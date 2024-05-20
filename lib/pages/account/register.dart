@@ -239,10 +239,10 @@ class _RegistrationScreenState extends State<RegistrationScreen>
       );
 
       // // // Token generation successful (optional: access token from state)
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => DashboardApp()),
-      // );
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => DashboardApp()),
+      );
 
       // // You might want to navigate the user to a different screen after successful registration
     }  catch (e) {

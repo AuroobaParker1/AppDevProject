@@ -1,5 +1,5 @@
-import 'package:aap_dev_project/models/user.dart';
-import 'package:aap_dev_project/models/userSharing.dart';
+// import 'package:aap_dev_project/models/user.dart';
+// import 'package:aap_dev_project/models/userSharing.dart';
 
 
 // class RecordsSharingRepository {
@@ -81,5 +81,121 @@ import 'package:aap_dev_project/models/userSharing.dart';
 //       return userRecords;
 //     }
 //     return [];
+//   }
+// }
+
+// import 'dart:convert';
+// import 'package:http/http.dart' as http;
+// import 'package:aap_dev_project/models/userSharing.dart';
+
+// class RecordsSharingRepository {
+//   final String baseUrl = 'https://medqr-blockchain.onrender.com'; // Replace with your actual backend URL
+
+//   Future<List<UserSharing>> getSharedRecords() async {
+//     // Implement the API call to get shared records
+//     final response = await http.get(Uri.parse('$baseUrl/api/shared-records'));
+//     if (response.statusCode == 200) {
+//       List<dynamic> sharedData = json.decode(response.body);
+//       return sharedData.map((record) => UserSharing.fromJson(record)).toList();
+//     } else {
+//       throw Exception('Failed to load shared records');
+//     }
+//   }
+
+//   Future<List<UserSharing>> removerUserFromShared() async {
+//     // Implement the API call to remove user from shared records
+//     final response = await http.delete(Uri.parse('$baseUrl/shared-records'));
+//     if (response.statusCode == 200) {
+//       List<dynamic> sharedData = json.decode(response.body);
+//       return sharedData.map((record) => UserSharing.fromJson(record)).toList();
+//     } else {
+//       throw Exception('Failed to remove user from shared records');
+//     }
+//   }
+
+//   Future<List<UserSharing>> addUserToShared(String code) async {
+//     // Implement the API call to add user to shared records
+//     final response = await http.post(
+//       Uri.parse('$baseUrl/shared-records'),
+//       headers: {'Content-Type': 'application/json'},
+//       body: json.encode({'code': code}),
+//     );
+//     if (response.statusCode == 200) {
+//       List<dynamic> sharedData = json.decode(response.body);
+//       return sharedData.map((record) => UserSharing.fromJson(record)).toList();
+//     } else {
+//       throw Exception('Failed to add user to shared records');
+//     }
+//   }
+// }
+
+
+
+
+// import 'package:http/http.dart' as http;
+// import 'dart:convert';
+// import 'package:aap_dev_project/util/constant.dart'as constants;
+
+
+// class RecordsSharingRepository {
+//  String baseUrl = '${constants.url}/api/medical-records'; // Replace with your actual API endpoint
+
+//   RecordsSharingRepository({required this.baseUrl});
+
+//   Future<String> generateVerificationCode() async {
+//     final response = await http.get(Uri.parse('$baseUrl/generate-code'));
+//     if (response.statusCode == 200) {
+//       final data = json.decode(response.body);
+//       return data['code'];
+//     } else {
+//       throw Exception('Failed to generate verification code');
+//     }
+//   }
+
+//   Future<List<dynamic>> verifyCodeAndRetrieveRecords(String code) async {
+//     final response = await http.post(
+//       Uri.parse('$baseUrl/verify-code'),
+//       body: json.encode({'code': code}),
+//       headers: {'Content-Type': 'application/json'},
+//     );
+//     if (response.statusCode == 200) {
+//       final data = json.decode(response.body);
+//       return data['medicalRecords'];
+//     } else {
+//       throw Exception('Failed to verify code or retrieve records');
+//     }
+//   }
+// }
+
+
+// import 'package:http/http.dart' as http;
+// import 'dart:convert';
+// import 'package:aap_dev_project/util/constant.dart'as constants;
+// class RecordsSharingRepository {
+// String baseUrl = '${constants.url}/api/medical-records';
+//   RecordsSharingRepository({required this.baseUrl});
+
+//   Future<String> generateVerificationCode() async {
+//     final response = await http.get(Uri.parse('$baseUrl/generate-code'));
+//     if (response.statusCode == 200) {
+//       final data = json.decode(response.body);
+//       return data['code'];
+//     } else {
+//       throw Exception('Failed to generate verification code');
+//     }
+//   }
+
+//   Future<List<dynamic>> verifyCodeAndRetrieveRecords(String code) async {
+//     final response = await http.post(
+//       Uri.parse('$baseUrl/verify-code'),
+//       body: json.encode({'code': code}),
+//       headers: {'Content-Type': 'application/json'},
+//     );
+//     if (response.statusCode == 200) {
+//       final data = json.decode(response.body);
+//       return data['medicalRecords'];
+//     } else {
+//       throw Exception('Failed to verify code or retrieve records');
+//     }
 //   }
 // }
