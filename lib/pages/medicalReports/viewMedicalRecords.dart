@@ -25,7 +25,7 @@ class ViewRecords extends StatefulWidget {
 class _ViewRecordsState extends State<ViewRecords> with RouteAware {
   final MedicalRecordsRepository recordsRepository = MedicalRecordsRepository();
   late MedicalRecordsBloc _recordsBloc;
-late UserBloc _userBloc;
+// late UserBloc _userBloc;
   @override
   void didPopNext() {
     setState(() {});
@@ -37,7 +37,7 @@ late UserBloc _userBloc;
     super.initState();
     _recordsBloc = BlocProvider.of<MedicalRecordsBloc>(context);
     _recordsBloc.add(const FetchRecord());
-    _userBloc = BlocProvider.of<UserBloc>(context);
+    // _userBloc = BlocProvider.of<UserBloc>(context);
   }
 
   @override

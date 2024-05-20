@@ -8,7 +8,7 @@ import 'jwtStorage.dart';
 class MedicalRecordService {
   static const String baseUrl = '${constants.ip}/api/medical-records';
 
-  static Future<Map<String, dynamic>> generateVerificationCode(String email) async {
+  static Future<Map<String, dynamic>> generateVerificationCode() async {
     // Retrieve the JWT token
       String? token = await retrieveJwtToken();
 
@@ -29,15 +29,26 @@ class MedicalRecordService {
       throw Exception('Failed to generate verification code');
     }
   }
+static Future<List<dynamic>> verifyCodeAndRetrieveRecords(String code) async {
+    final token = await retrieveJwtToken();
 
-  static Future<Map<String, dynamic>> verifyCodeAndRetrieveRecords(String code) async {
     final response = await http.post(
       Uri.parse('$baseUrl/verify-code'),
-      body: {'code': code},
+      headers: {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json', // Ensure this line is added
+    },
+      body: jsonEncode({'code': code}),
     );
 
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      // Parse the JSON response
+      var jsonResponse = jsonDecode(response.body);
+
+      // Extract the medicalRecords array
+      List<dynamic> recordsJson = jsonResponse['medicalRecords'];
+      print("checking response");
+      return recordsJson;
     } else {
       throw Exception('Failed to verify code and retrieve records');
     }
