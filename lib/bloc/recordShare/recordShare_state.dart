@@ -1,35 +1,30 @@
-import 'package:aap_dev_project/models/userSharing.dart';
 import 'package:equatable/equatable.dart';
 
-abstract class RecordState extends Equatable {
-  const RecordState([List props = const []]) : super();
+abstract class MedicalRecordState extends Equatable {
+  const MedicalRecordState();
 
   @override
-  List<Object?> get props => [];
+  List<Object> get props => [];
 }
 
-class RecordEmpty extends RecordState {}
+class MedicalRecordInitial extends MedicalRecordState {}
 
-class RecordLoading extends RecordState {}
+class MedicalRecordLoading extends MedicalRecordState {}
 
-class RecordLoaded extends RecordState {
-  final List<UserSharing> records;
+class MedicalRecordLoaded extends MedicalRecordState {
+  final Map<String, dynamic> data;
 
-  RecordLoaded({required this.records}) : super([records]);
+  const MedicalRecordLoaded(this.data);
+
+  @override
+  List<Object> get props => [data];
 }
 
-class RecordError extends RecordState {
-  final String? errorMsg;
-  const RecordError({this.errorMsg});
-}
+class MedicalRecordError extends MedicalRecordState {
+  final String message;
 
-class RecordSetting extends RecordState {} 
-class RecordSetSuccess extends RecordState {
-  final List<UserSharing> records;
-  RecordSetSuccess({required this.records}) : super([records]);
-} 
+  const MedicalRecordError(this.message);
 
-class RecordSetError extends RecordState {
-  final String? errorMsg;
-  const RecordSetError({this.errorMsg});
+  @override
+  List<Object> get props => [message];
 }

@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:aap_dev_project/util/constant.dart'as constants;
 
-const String baseUrl = '${constants.ip}/api/patients'; // Replace with your actual API endpoint
+const String baseUrl = '${constants.url}/api/patients'; // Replace with your actual API endpoint
 
 Future<http.Response> signup(
     {required String name,

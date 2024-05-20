@@ -85,7 +85,7 @@ Future<void> sendEncryptedAESKey() async {
 
     // Send the encrypted AES key to the Node.js server
     final response = await http.post(
-      Uri.parse('${constants.ip}/api/patients/storeAESkey'), // Replace with your actual API endpoint
+      Uri.parse('${constants.url}/api/patients/storeAESkey'), // Replace with your actual API endpoint
       headers: {
         'Content-Type': 'application/json',
          'Authorization': 'Bearer $token',
