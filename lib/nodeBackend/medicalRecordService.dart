@@ -6,7 +6,7 @@ import 'package:aap_dev_project/util/constant.dart'as constants;
 import 'jwtStorage.dart';
 
 class MedicalRecordService {
-  static const String baseUrl = '${constants.ip}/api/medical-records';
+  static const String baseUrl = '${constants.url}/api/medical-records';
 
   static Future<Map<String, dynamic>> generateVerificationCode() async {
     // Retrieve the JWT token
