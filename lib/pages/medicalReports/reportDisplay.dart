@@ -72,3 +72,4 @@ class _ViewReportState extends State<ViewReport> with RouteAware {
     );
   }
 }
+  
