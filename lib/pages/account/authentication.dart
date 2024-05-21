@@ -234,35 +234,35 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   backgroundColor: const Color(0xFF01888B),
                 ),
-                const SizedBox(height: 30),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const SizedBox(width: 10), // Add this
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey, width: 0.2),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: TextButton.icon(
-                          icon: const FaIcon(FontAwesomeIcons.google),
-                          label: const Text('Sign in with Google'),
-                          onPressed: () async {
-                            try {
-                                print('Successfully signed in with Google');
+                 const SizedBox(height: 30),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     const SizedBox(width: 10), // Add this
+                //     Expanded(
+                //       child: Container(
+                //         decoration: BoxDecoration(
+                //           border: Border.all(color: Colors.grey, width: 0.2),
+                //           borderRadius: BorderRadius.circular(10),
+                //         ),
+                //         child: TextButton.icon(
+                //           icon: const FaIcon(FontAwesomeIcons.google),
+                //           label: const Text('Sign in with Google'),
+                //           onPressed: () async {
+                //             try {
+                //                 print('Successfully signed in with Google');
                                 
-                            } catch (e) {
-                              // Handle error here
-                              print('Error signing in with Google: $e');
-                            }
-                          },
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10), // Add this
-                  ],
-                ),
+                //             } catch (e) {
+                //               // Handle error here
+                //               print('Error signing in with Google: $e');
+                //             }
+                //           },
+                //         ),
+                //       ),
+                //     ),
+                //     const SizedBox(width: 10), // Add this
+                //   ],
+                // ),
                 const SizedBox(height: 16),
                 TextButton(
                   onPressed: () {},

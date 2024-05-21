@@ -78,18 +78,18 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       ),
                     ),
                   ),
-                  ListTile(
-                    leading: const Icon(Icons.person),
-                    title: const Text('Profile'),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                UpdateProfilePage(user: state.user)),
-                      );
-                    },
-                  ),
+                  // ListTile(
+                  //   leading: const Icon(Icons.person),
+                  //   title: const Text('Profile'),
+                  //   onTap: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //           builder: (context) =>
+                  //               UpdateProfilePage(user: state.user)),
+                  //     );
+                  //   },
+                  // ),
                   ListTile(
                     leading: const Icon(Icons.info),
                     title: const Text('About Us'),

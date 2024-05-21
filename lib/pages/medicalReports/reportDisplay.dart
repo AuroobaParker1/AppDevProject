@@ -1,4 +1,3 @@
-// // ignore_for_file: file_names, library_private_types_in_public_api, sized_box_for_whitespace
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -7,9 +6,8 @@ import '../navigation/bottomNavigationBar.dart';
 import '../navigation/appDrawer.dart';
 import 'dart:async';
 
-
 class ViewReport extends StatefulWidget {
-   final MedicalRecord  report;
+  final MedicalRecord report;
   const ViewReport({Key? key, required this.report}) : super(key: key);
 
   @override
@@ -30,37 +28,38 @@ class _ViewReportState extends State<ViewReport> with RouteAware {
       bottomNavigationBar: BaseMenuBar(),
       body: Stack(
         children: [
-          Column(
-            children: [
-              Container(
-                  padding: const EdgeInsets.all(16.0),
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.2,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(50.0),
-                      bottomRight: Radius.circular(50.0),
+          SingleChildScrollView( // Added SingleChildScrollView here
+            child: Column(
+              children: [
+                Container(
+                    padding: const EdgeInsets.all(16.0),
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(50.0),
+                        bottomRight: Radius.circular(50.0),
+                      ),
+                      color: Color(0xFF01888B),
                     ),
-                    color: Color(0xFF01888B),
-                  ),
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 60.0),
-                      child: Text(
-                        textAlign: TextAlign.center,
-                        widget.report.filename,
-                        style: const TextStyle(
-                          fontSize: 36.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 60.0),
+                        child: Text(
+                          textAlign: TextAlign.center,
+                          widget.report.filename,
+                          style: const TextStyle(
+                            fontSize: 36.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                    ),
-                  )),
-              const SizedBox(height: 80.0),
-              
-              Image.memory(widget.report.data),
-            ],
+                    )),
+                const SizedBox(height: 80.0),
+                Image.memory(widget.report.data),
+              ],
+            ),
           ),
           const Positioned(
             top: 60,
@@ -72,4 +71,3 @@ class _ViewReportState extends State<ViewReport> with RouteAware {
     );
   }
 }
-  
