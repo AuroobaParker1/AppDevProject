@@ -7,7 +7,7 @@ import 'package:aap_dev_project/bloc/user/user_event.dart';
 import 'package:aap_dev_project/bloc/user/user_state.dart';
 import 'package:aap_dev_project/core/repository/user_repo.dart';
 import 'package:aap_dev_project/models/user.dart';
-import 'package:aap_dev_project/nodeBackend/jwtStorage.dart';
+import 'package:aap_dev_project/API/jwtStorage.dart';
 import 'package:aap_dev_project/pages/navigation/bottomNavigationBar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';

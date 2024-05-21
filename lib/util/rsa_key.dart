@@ -12,7 +12,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:encrypt/encrypt.dart';
 
-import '../nodeBackend/fix_secure.dart';
+import '../API/fix_secure.dart';
 class RsaKeyHelper {
    AsymmetricKeyPair<PublicKey, PrivateKey> generateECKeyPair() {
   final ecDomainParameters = ECDomainParameters('prime256v1');

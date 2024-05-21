@@ -1,12 +1,12 @@
 import 'package:aap_dev_project/models/user.dart';
-import 'package:aap_dev_project/nodeBackend/login.dart';
-import 'package:aap_dev_project/nodeBackend/register.dart';
-import 'package:aap_dev_project/nodeBackend/getUserInfo.dart';
+import 'package:aap_dev_project/API/login.dart';
+import 'package:aap_dev_project/API/register.dart';
+import 'package:aap_dev_project/API/getUserInfo.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import '../../nodeBackend/aesKeyStorage.dart';
+import '../../API/aesKeyStorage.dart';
 class UserRepository {
   Future<UserProfile> getUser(String token) async {
   http.Response response = await getInfo(token: token);

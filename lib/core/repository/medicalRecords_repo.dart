@@ -10,9 +10,9 @@ import 'package:encrypt/encrypt.dart' as encrypt;
 
 import 'package:aap_dev_project/util/constant.dart'as constants;
 
-import '../../nodeBackend/aesKeyStorage.dart';
-import '../../nodeBackend/jwtStorage.dart';
-import '../../nodeBackend/upload_medical_record.dart';
+import '../../API/aesKeyStorage.dart';
+import '../../API/jwtStorage.dart';
+import '../../API/upload_medical_record.dart';
 
 class MedicalRecordsRepository {
 

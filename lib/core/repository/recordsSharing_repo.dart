@@ -4,8 +4,8 @@ import 'dart:typed_data';
 import 'package:aap_dev_project/models/report.dart';
 import 'package:aap_dev_project/models/user.dart';
 import 'package:aap_dev_project/models/userSharing.dart';
-import 'package:aap_dev_project/nodeBackend/aesKeyStorage.dart';
-import 'package:aap_dev_project/nodeBackend/medicalRecordService.dart';
+import 'package:aap_dev_project/API/aesKeyStorage.dart';
+import 'package:aap_dev_project/API/medicalRecordService.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 
