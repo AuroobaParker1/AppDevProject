@@ -1,16 +1,17 @@
 // ignore_for_file: file_names, library_private_types_in_public_api, avoid_print, unnecessary_cast
 
-import 'package:aap_dev_project/bloc/user/user_block.dart';
-import 'package:aap_dev_project/bloc/user/user_event.dart';
-import 'package:aap_dev_project/bloc/user/user_state.dart';
-import 'package:aap_dev_project/core/repository/user_repo.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../drawerOptions/updateProfile.dart';
+
+import '../../bloc/user/user_block.dart';
+import '../../bloc/user/user_state.dart';
+import '../../core/repository/user_repo.dart';
+import '../../API/jwtStorage.dart';
+import '../account/authentication.dart';
 import '../drawerOptions/aboutUs.dart';
 import '../drawerOptions/help.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:aap_dev_project/pages/account/authentication.dart';
+import '../drawerOptions/updateProfile.dart';
 
 class CustomDrawer extends StatefulWidget {
   final dynamic user;
@@ -25,14 +26,22 @@ class _CustomDrawerState extends State<CustomDrawer> {
   late UserBloc _userBloc;
 
   @override
-  void initState() {
+   void initState() {
     super.initState();
-    _userBloc = UserBloc(userRepository: userRepository);
-    _userBloc.add(const FetchUserData());
+        // String? token = await retrieveJwtToken();
+
+    _userBloc = BlocProvider.of<UserBloc>(context);
+    // if (token != null) {
+    //   _userBloc.add(FetchUserData(jwtToken: token));
+    // } else {
+    //   // Handle the case where there's no token (e.g., show a login screen)
+    //   print('No token found. User might need to log in.');
+    // }
   }
 
+
   Future<void> signOut() async {
-    await FirebaseAuth.instance.signOut();
+  await deleteJwtToken();
   }
 
   @override
@@ -54,7 +63,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 padding: EdgeInsets.zero,
                 children: <Widget>[
                   UserAccountsDrawerHeader(
-                    accountName: Text(state.user.name),
+                    // accountName: Text(state.user.name),
+                    accountName: Text(state.user.name),                    
                     accountEmail: Text(state.user.email),
                     decoration: BoxDecoration(
                       color: const Color(0xFF01888B),
@@ -68,18 +78,18 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       ),
                     ),
                   ),
-                  ListTile(
-                    leading: const Icon(Icons.person),
-                    title: const Text('Profile'),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                UpdateProfilePage(user: state.user)),
-                      );
-                    },
-                  ),
+                  // ListTile(
+                  //   leading: const Icon(Icons.person),
+                  //   title: const Text('Profile'),
+                  //   onTap: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //           builder: (context) =>
+                  //               UpdateProfilePage(user: state.user)),
+                  //     );
+                  //   },
+                  // ),
                   ListTile(
                     leading: const Icon(Icons.info),
                     title: const Text('About Us'),
@@ -109,9 +119,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     title: const Text('Logout'),
                     onTap: () {
                       signOut().then((_) {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                              builder: (context) => const Authentication()),
+                        // Navigator.of(context).pushReplacement(
+                        //   MaterialPageRoute(
+                        //       builder: (context) => const Authentication()),
+                        // );
+                        // Navigate to login screen
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => const Authentication()),
+                          (Route<dynamic> route) => false,
                         );
                       }).catchError((error) {
                         print("Error signing out: $error");
@@ -129,9 +145,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
         });
   }
 
-  @override
-  void dispose() {
-    _userBloc.close();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _userBloc.close();
+  //   super.dispose();
+  // }
 }

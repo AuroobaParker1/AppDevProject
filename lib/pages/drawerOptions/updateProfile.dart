@@ -7,6 +7,7 @@ import 'package:aap_dev_project/bloc/user/user_event.dart';
 import 'package:aap_dev_project/bloc/user/user_state.dart';
 import 'package:aap_dev_project/core/repository/user_repo.dart';
 import 'package:aap_dev_project/models/user.dart';
+import 'package:aap_dev_project/API/jwtStorage.dart';
 import 'package:aap_dev_project/pages/navigation/bottomNavigationBar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -45,28 +46,36 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> with RouteAware {
   }
 
   Future<void> _pickImage(user) async {
-    final XFile? pickedFile =
-        await _picker.pickImage(source: ImageSource.gallery);
+    
+    // final XFile? pickedFile =
+    //     await _picker.pickImage(source: ImageSource.gallery);
 
-    if (pickedFile != null) {
-      Reference storageReference =
-          FirebaseStorage.instance.ref().child('user_images/${user.uid}');
-      TaskSnapshot uploadTask =
-          await storageReference.putFile(File(pickedFile.path));
-      String imageUrl = await uploadTask.ref.getDownloadURL();
-      // Update the image controller text and setState to rebuild UI
-      setState(() {
-        _imageController.text = imageUrl;
-      });
-    }
+    // if (pickedFile != null) {
+    //   Reference storageReference =
+    //       FirebaseStorage.instance.ref().child('user_images/${user.uid}');
+    //   TaskSnapshot uploadTask =
+    //       await storageReference.putFile(File(pickedFile.path));
+    //   String imageUrl = await uploadTask.ref.getDownloadURL();
+    //   // Update the image controller text and setState to rebuild UI
+    //   setState(() {
+    //     _imageController.text = imageUrl;
+    //   });
+    // }
   }
 
   @override
-  void initState() {
+  void initState() async {
     super.initState();
+        String? token = await retrieveJwtToken();
 
     _userBloc = UserBloc(userRepository: userRepository);
-    _userBloc.add(const FetchUserData());
+    if (token != null) {
+      _userBloc.add(FetchUserData(jwtToken: token));
+    } else {
+            print("i am in dashboard");
+      // Handle the case where there's no token (e.g., show a login screen)
+      print('No token found. User might need to log in.');
+    }
   }
 
   Future<void> _updateUserProfile(state) async {
@@ -92,7 +101,8 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> with RouteAware {
       image: _imageController.text == ''
           ? state.user.image
           : _imageController.text,
-    )));
+    ),
+    ));
 
     Navigator.push(
       context,

@@ -7,14 +7,16 @@ import 'package:aap_dev_project/pages/home/dashboard.dart';
 import 'package:aap_dev_project/pages/medicalReports/reportDisplay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../bloc/user/user_block.dart';
+import '../../core/repository/user_repo.dart';
 import '../navigation/bottomNavigationBar.dart';
 import '../navigation/appDrawer.dart';
 
 class ViewRecords extends StatefulWidget {
-  const ViewRecords({Key? key, required this.userid, required this.name})
+  const ViewRecords({Key? key})
       : super(key: key);
-  final String userid;
-  final String name;
+  
+  // final String name;
 
   @override
   _ViewRecordsState createState() => _ViewRecordsState();
@@ -23,7 +25,7 @@ class ViewRecords extends StatefulWidget {
 class _ViewRecordsState extends State<ViewRecords> with RouteAware {
   final MedicalRecordsRepository recordsRepository = MedicalRecordsRepository();
   late MedicalRecordsBloc _recordsBloc;
-
+// late UserBloc _userBloc;
   @override
   void didPopNext() {
     setState(() {});
@@ -33,8 +35,9 @@ class _ViewRecordsState extends State<ViewRecords> with RouteAware {
   @override
   void initState() {
     super.initState();
-    _recordsBloc = MedicalRecordsBloc(recordsRepository: recordsRepository);
-    _recordsBloc.add(FetchRecord(userid: widget.userid));
+    _recordsBloc = BlocProvider.of<MedicalRecordsBloc>(context);
+    _recordsBloc.add(const FetchRecord());
+    // _userBloc = BlocProvider.of<UserBloc>(context);
   }
 
   @override
@@ -69,17 +72,17 @@ class _ViewRecordsState extends State<ViewRecords> with RouteAware {
                         child: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             child: Center(
-                              child: Text(
-                                widget.name != ''
-                                    ? 'Medical Records of ${widget.name}'
-                                    : 'Your Medical Records',
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  fontSize: 36.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
+                              // child: Text(
+                              //       // _userBloc.userProfile?.name != null
+                              //       //     ? 'Medical Records of ${_userBloc.userProfile!.name}'
+                              //       //     : 'Your Medical Records',
+                              //   textAlign: TextAlign.center,
+                              //   style: const TextStyle(
+                              //     fontSize: 36.0,
+                              //     fontWeight: FontWeight.bold,
+                              //     color: Colors.white,
+                              //   ),
+                              // ),
                             )),
                       ),
                       Positioned(
@@ -145,7 +148,7 @@ class _ViewRecordsState extends State<ViewRecords> with RouteAware {
                                       ),
                                       children: [
                                         TextSpan(
-                                          text: record.type,
+                                          text: record.filename,
                                           style: TextStyle(
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.bold,
@@ -155,13 +158,13 @@ class _ViewRecordsState extends State<ViewRecords> with RouteAware {
                                       ],
                                     ),
                                   ),
-                                  subtitle: Text(
-                                    'Date of Upload: ${record.createdAt!}',
-                                    style: TextStyle(
-                                      fontSize: 14.0,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
+                                  // subtitle: Text(
+                                  //   'Date of Upload: ${record.createdAt!}',
+                                  //   style: TextStyle(
+                                  //     fontSize: 14.0,
+                                  //     color: Colors.grey,
+                                  //   ),
+                                  // ),
                                   trailing: Icon(
                                     Icons.arrow_forward,
                                     color: Color(0xFF01888B),
@@ -181,9 +184,9 @@ class _ViewRecordsState extends State<ViewRecords> with RouteAware {
             }));
   }
 
-  @override
-  void dispose() {
-    _recordsBloc.close();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _recordsBloc.close();
+  //   super.dispose();
+  // }
 }

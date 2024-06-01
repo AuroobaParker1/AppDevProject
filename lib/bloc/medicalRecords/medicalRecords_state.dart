@@ -13,7 +13,7 @@ class RecordEmpty extends RecordState {}
 class RecordLoading extends RecordState {}
 
 class RecordLoaded extends RecordState {
-  final List<UserReport> records;
+  final List<MedicalRecord> records;
 
   RecordLoaded({required this.records}) : super([records]);
 }
@@ -25,10 +25,14 @@ class RecordError extends RecordState {
 
 class RecordSetting extends RecordState {} 
 
-class RecordSetSuccess extends RecordState {
-  final List<UserReport> records;
+// class RecordSetSuccess extends RecordState {
+//   final List<UserReport> records;
 
-  RecordSetSuccess({required this.records}) : super([records]);
+//   RecordSetSuccess({required this.records}) : super([records]);
+// } 
+class RecordSetSuccess extends RecordState {
+
+  // RecordSetSuccess() : super([]);
 } 
 
 class RecordSetError extends RecordState {

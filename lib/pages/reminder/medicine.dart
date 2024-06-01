@@ -1,4 +1,3 @@
-// ignore_for_file: unused_import, file_names, unnecessary_import, sort_child_properties_last, deprecated_member_use, library_private_types_in_public_api
 
 import 'package:aap_dev_project/bloc/alarm/alarm_bloc.dart';
 import 'package:aap_dev_project/bloc/alarm/alarm_event.dart';
@@ -78,67 +77,9 @@ class _MedicineScreenState extends State<MedicineScreen> with RouteAware {
     'Ativan',
   ];
   String? selectedMedicine;
-  // OverlayEntry? _overlayEntry;
-  // final LayerLink _layerLink = LayerLink();
   TimeOfDay? selectedTime;
-  int? frequencyPerDay; // New variable for frequency
+  int? frequencyPerDay;
   List<int> frequencyOptions = List.generate(5, (index) => index + 1);
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _controller.addListener(() {
-  //     updateOverlay();
-  //   });
-  // }
-
-  // void updateOverlay() {
-  //   _overlayEntry?.remove();
-  //   if (_controller.text.isEmpty) {
-  //     return;
-  //   }
-
-  //   List<String> matchingResults = allMedicines
-  //       .where((medicine) =>
-  //           medicine.toLowerCase().contains(_controller.text.toLowerCase()))
-  //       .toList();
-
-  //   if (matchingResults.isNotEmpty) {
-  //     _overlayEntry = createOverlayEntry(matchingResults);
-  //     Overlay.of(context).insert(_overlayEntry!);
-  //   }
-  // }
-
-  // OverlayEntry createOverlayEntry(List<String> matchingResults) {
-  //   return OverlayEntry(
-  //     builder: (context) => Positioned(
-  //       width: 200,
-  //       child: CompositedTransformFollower(
-  //         link: _layerLink,
-  //         showWhenUnlinked: false,
-  //         offset: const Offset(0, 60),
-  //         child: Material(
-  //           elevation: 4,
-  //           child: ListView(
-  //             padding: EdgeInsets.zero,
-  //             shrinkWrap: true,
-  //             children: matchingResults
-  //                 .map((medicine) => ListTile(
-  //                       title: Text(medicine),
-  //                       onTap: () {
-  //                         _controller.text = medicine;
-  //                         selectedMedicine = medicine;
-  //                         _overlayEntry?.remove();
-  //                         setState(() {});
-  //                       },
-  //                     ))
-  //                 .toList(),
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   void setAlarm() async {
     if (selectedMedicine == null ||
@@ -151,7 +92,6 @@ class _MedicineScreenState extends State<MedicineScreen> with RouteAware {
 
     DateTime currentDate = DateTime.now();
 
-    // Converting TimeOfDay to DateTime
     DateTime dateTime = DateTime(
       currentDate.year,
       currentDate.month,
@@ -159,8 +99,7 @@ class _MedicineScreenState extends State<MedicineScreen> with RouteAware {
       selectedTime!.hour,
       selectedTime!.minute,
     );
-    print('ok');
-    print(dateTime);
+
     String uniqueId = '${DateTime.now().millisecondsSinceEpoch}';
     AlarmInformation alarmInfo = AlarmInformation(
       id: uniqueId,
@@ -171,11 +110,6 @@ class _MedicineScreenState extends State<MedicineScreen> with RouteAware {
     );
 
     BlocProvider.of<AlarmBloc>(context).add(SetAlarm(alarmInfo));
-
-    print('lol');
-
-    // Navigator.pushReplacement(
-    //     context, MaterialPageRoute(builder: (_) => AlarmHomeScreen()));
   }
 
   Future<void> _selectTime(BuildContext context) async {
@@ -187,7 +121,6 @@ class _MedicineScreenState extends State<MedicineScreen> with RouteAware {
       setState(() {
         selectedTime = picked;
       });
-      // Here you can add the code to set the alarm
     }
   }
 
@@ -195,15 +128,13 @@ class _MedicineScreenState extends State<MedicineScreen> with RouteAware {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Hide keyboard when tapping anywhere outside the text field
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
         body: SingleChildScrollView(
           child: Column(children: [
             Container(
-              padding:
-                  const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
+              padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
               width: double.infinity,
               height: MediaQuery.of(context).size.height * 0.2,
               decoration: const BoxDecoration(
@@ -220,8 +151,7 @@ class _MedicineScreenState extends State<MedicineScreen> with RouteAware {
                     child: Padding(
                         padding: EdgeInsets.only(top: 50),
                         child: IconButton(
-                          icon:
-                              const Icon(Icons.arrow_back, color: Colors.white),
+                          icon: const Icon(Icons.arrow_back, color: Colors.white),
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => const AlarmHomeScreen(),
@@ -260,16 +190,6 @@ class _MedicineScreenState extends State<MedicineScreen> with RouteAware {
                       style: TextStyle(fontSize: 16, color: Colors.grey),
                     ),
                   ),
-                  // CompositedTransformTarget(
-                  //   link: _layerLink,
-                  //   child: TextFormField(
-                  //     controller: _controller,
-                  //     decoration: const InputDecoration(
-                  //       border: OutlineInputBorder(),
-                  //       labelText: 'Select Medicine',
-                  //     ),
-                  //   ),
-                  // ),
                   TypeAheadFormField(
                     textFieldConfiguration: TextFieldConfiguration(
                       controller: _typeAheadController,
@@ -363,12 +283,10 @@ class _MedicineScreenState extends State<MedicineScreen> with RouteAware {
                             ),
                           );
                         });
-                        // Return a container to avoid returning null
                         return Container();
                       } else if (state is AlarmSetError) {
                         return Text('Error: ${state.errorMsg}');
                       }
-                      // By default, show an empty container
                       return Container();
                     },
                   ),

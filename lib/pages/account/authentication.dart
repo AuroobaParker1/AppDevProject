@@ -3,29 +3,26 @@
 import 'package:aap_dev_project/bloc/user/user_block.dart';
 import 'package:aap_dev_project/bloc/user/user_event.dart';
 import 'package:aap_dev_project/core/repository/user_repo.dart';
+import 'package:aap_dev_project/pages/account/authtry,dart';
 import 'package:aap_dev_project/pages/reminder/medicine.dart';
 import 'package:aap_dev_project/pages/account/forgotPassword.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/services.dart';
-import '../../firebase/firebase_options.dart';
+
 import 'package:aap_dev_project/pages/account/register.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../home/dashboard.dart';
 import 'package:aap_dev_project/models/user.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Authentication extends StatelessWidget {
   const Authentication({super.key});
 
   @override
   Widget build(BuildContext context) {
-    if (FirebaseAuth.instance.currentUser != null) {
-      return DashboardApp();
-    }
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -89,8 +86,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final UserRepository userRepository = UserRepository();
-  late UserBloc _userBloc;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool _isHidden = true;
@@ -99,47 +96,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    _userBloc = UserBloc(userRepository: userRepository);
-  }
-
-  Future<UserCredential?> signInWithGoogle() async {
-    QuerySnapshot snapshot = await _firestore.collection('users').get();
-    var exists = false;
-
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-    // Return null if user cancels the Google Sign-In
-    if (googleUser == null) return null;
-
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
-
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-
-    // Once signed in, return the UserCredential
-    var a = await FirebaseAuth.instance.signInWithCredential(credential);
-    for (var doc in snapshot.docs) {
-      exists = doc.id == a.user?.uid;
-    }
-    if (exists == false) {
-      _userBloc.add(SetUser(
-          user: UserProfile(
-        name: googleUser.displayName!,
-        age: 0,
-        email: googleUser.email,
-        mobile: '',
-        adress: '',
-        cnic: '',
-        medicalHistory: '',
-        image: googleUser.photoUrl!,
-      )));
-    }
-    return a;
   }
 
   void _toggleVisibility() {
@@ -247,29 +203,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 FloatingActionButton.extended(
                   onPressed: () async {
                     try {
-                      UserCredential userCredential = await FirebaseAuth
-                          .instance
-                          .signInWithEmailAndPassword(
-                        email: emailController.text,
-                        password: passwordController.text,
+                      bool loginSuccess = await userRepository.LoginUser_repo(
+                        user_email: emailController.text,
+                        user_pass: passwordController.text,
                       );
-                      // Update status message on successful sign-in
-                      // Navigate to MedicineScreen
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => DashboardApp()),
-                      );
-                    } on FirebaseAuthException catch (e) {
-                      // Update status message on error
-                      setState(() {
-                        if (e.code == 'user-not-found' ||
-                            e.code == 'invalid-credential' ||
-                            e.code == 'wrong-password') {
-                          signInStatus = 'Incorrect email or password';
-                        } else {
-                          signInStatus = e.code;
-                        }
-                      });
+
+                      if (loginSuccess) {
+                        // Navigate to DashboardApp if login is successful
+                         Navigator.pushReplacement(  // Using pushReplacement to avoid back navigation to login
+                          context,
+                          MaterialPageRoute(builder: (context) =>  const AuthenticatedWrapper()),
+                        );
+                      } else {
+                        // Show error dialog if login failed
+                        showLoginErrorDialog(context);
+                      }
+                    } catch (e) {
+                      // Handle any unexpected errors
+                      print('Error: $e');
+                      showLoginErrorDialog(context);
                     }
                   },
                   icon: const Icon(Icons.login),
@@ -282,44 +234,35 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   backgroundColor: const Color(0xFF01888B),
                 ),
-                const SizedBox(height: 30),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const SizedBox(width: 10), // Add this
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey, width: 0.2),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: TextButton.icon(
-                          icon: const FaIcon(FontAwesomeIcons.google),
-                          label: const Text('Sign in with Google'),
-                          onPressed: () async {
-                            try {
-                              final UserCredential? userCredential =
-                                  await signInWithGoogle();
-                              if (userCredential != null) {
-                                // User signed in with Google. You can navigate to another screen here.
-                                print('Successfully signed in with Google');
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => DashboardApp()),
-                                );
-                              }
-                            } catch (e) {
-                              // Handle error here
-                              print('Error signing in with Google: $e');
-                            }
-                          },
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10), // Add this
-                  ],
-                ),
+                 const SizedBox(height: 30),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     const SizedBox(width: 10), // Add this
+                //     Expanded(
+                //       child: Container(
+                //         decoration: BoxDecoration(
+                //           border: Border.all(color: Colors.grey, width: 0.2),
+                //           borderRadius: BorderRadius.circular(10),
+                //         ),
+                //         child: TextButton.icon(
+                //           icon: const FaIcon(FontAwesomeIcons.google),
+                //           label: const Text('Sign in with Google'),
+                //           onPressed: () async {
+                //             try {
+                //                 print('Successfully signed in with Google');
+                                
+                //             } catch (e) {
+                //               // Handle error here
+                //               print('Error signing in with Google: $e');
+                //             }
+                //           },
+                //         ),
+                //       ),
+                //     ),
+                //     const SizedBox(width: 10), // Add this
+                //   ],
+                // ),
                 const SizedBox(height: 16),
                 TextButton(
                   onPressed: () {},
@@ -355,6 +298,36 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+void showLoginErrorDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Login Failed'),
+        content: Text('Invalid email or password. Please try again.'),
+        actions: [
+          TextButton(
+            child: Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+class AuthenticatedWrapper extends StatelessWidget {
+  const AuthenticatedWrapper({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider<UserBloc>(
+      create: (context) => UserBloc(userRepository: UserRepository()),
+      child: const DashboardApp(),  // Or your main authenticated view
     );
   }
 }

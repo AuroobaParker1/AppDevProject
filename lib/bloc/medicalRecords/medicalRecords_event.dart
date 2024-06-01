@@ -1,16 +1,14 @@
 import 'package:aap_dev_project/models/report.dart';
-import 'package:equatable/equatable.dart';
 
-abstract class RecordEvent extends Equatable {
+abstract class RecordEvent{
   const RecordEvent([List props = const []]) : super();
 }
 
 class FetchRecord extends RecordEvent {
-  final String userid;
-  const FetchRecord({required this.userid});
+  const FetchRecord();
 
-  @override
-  List<Object?> get props => [userid];
+  // @override
+  // List<Object?> get props => [userid];
 }
 
 class SetRecord extends RecordEvent {
@@ -18,6 +16,6 @@ class SetRecord extends RecordEvent {
 
   const SetRecord({required this.report});
 
-  @override
-  List<Object> get props => [report];
+  // @override
+  // List<Object> get props => [report];
 }

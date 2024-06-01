@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class AlarmInformation {
   final String id;
   final String name;
@@ -14,27 +12,6 @@ class AlarmInformation {
     required this.time,
     required this.isActive,
   });
-
-  factory AlarmInformation.fromFirestore(DocumentSnapshot doc) {
-    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-    return AlarmInformation(
-      frequency: data['frequency'] ?? 0,
-      id: doc.id,
-      name: data['name'] ?? '',
-      time: (data['time'] as Timestamp).toDate(),
-      isActive: data['isActive'] ?? false,
-    );
-  }
-
-  Map<String, dynamic> toFirestore() {
-    return {
-      'name': name,
-      'time': Timestamp.fromDate(time),
-      'isActive': isActive,
-      'frequency': frequency,
-      'id': id,
-    };
-  }
 
   factory AlarmInformation.fromJson(Map<String, dynamic> json) {
     return AlarmInformation(

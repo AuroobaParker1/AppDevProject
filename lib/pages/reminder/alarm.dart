@@ -1,3 +1,4 @@
+
 import 'package:aap_dev_project/models/alarmInfo.dart';
 import 'package:aap_dev_project/pages/home/dashboard.dart';
 import 'package:intl/intl.dart';
@@ -178,8 +179,6 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen>
       body: BlocBuilder(
         bloc: _alarmBloc,
         builder: (_, AlarmState state) {
-          print("Bol");
-          print(state);
           if (state is AlarmLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is AlarmLoaded) {
@@ -270,10 +269,8 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen>
           } else if (state is AlarmDeletedSuccess) {
             _alarmBloc.add(const FetchAlarm());
           } else if (state is AlarmSetting) {
-            print("JOKLKLK");
             const Center();
           } else if (state is AlarmSetSuccess) {
-            print("Chekcout");
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -283,7 +280,7 @@ class _ExampleAlarmHomeScreenState extends State<AlarmHomeScreen>
             const Center(
                 child: Column(children: [
               CircularProgressIndicator(),
-              Text("Deleteing Alarm")
+              Text("Deleting Alarm")
             ]));
           } else if (state is AlarmDeleteError) {
             return Center(

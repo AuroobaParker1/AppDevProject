@@ -1,86 +1,81 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:aap_dev_project/models/report.dart';
 import 'package:aap_dev_project/models/user.dart';
 import 'package:aap_dev_project/models/userSharing.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:aap_dev_project/API/aesKeyStorage.dart';
+import 'package:aap_dev_project/API/medicalRecordService.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 
 class RecordsSharingRepository {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  // Generates a verification code for a user based on their email
+  Future<String> generateVerificationCode() async {
+    try {
+      Map<String, dynamic> result = await MedicalRecordService.generateVerificationCode();
+      // Assuming the result contains a field 'code' with the verification code
+      var code = result['code'];
 
-  Future<List<UserSharing>> getSharedRecords() async {
-    DocumentSnapshot snapshot =
-        await _firestore.collection('recordSharing').doc('efg').get();
-    if (snapshot.exists) {
-      List<dynamic>? sharedData =
-          (snapshot.data() as Map<String, dynamic>?)?['currentlySharing'];
-      if (sharedData != null) {
-        List<UserSharing> userRecords = sharedData
-            .map((record) =>
-                UserSharing.fromJson(record as Map<String, dynamic>))
-            .toList();
-
-        return userRecords;
-      }
+      return code.toString() ;
+    } catch (e) {
+      print('Failed to generate verification code: $e');
+      throw Exception('Failed to generate verification code');
     }
-    return [];
   }
 
-  Future<List<UserSharing>> removerUserFromShared() async {
-    User? user = _auth.currentUser;
+  // Verifies a given code and retrieves records associated with it
+  Future<List<MedicalRecord>> verifyCodeAndRetrieveRecords(String code) async {
+    try {
+      List<dynamic> data = await MedicalRecordService.verifyCodeAndRetrieveRecords(code);
+      final List<MedicalRecord> records = [];
 
-    DocumentSnapshot snapshot =
-        await _firestore.collection('recordSharing').doc('efg').get();
-    if (snapshot.exists) {
-      List<dynamic>? sharedData =
-          (snapshot.data() as Map<String, dynamic>?)?['currentlySharing'];
-      List<UserSharing> userRecords = sharedData!
-          .map((records) =>
-              UserSharing.fromJson(records as Map<String, dynamic>))
-          .toList();
-      userRecords.removeWhere((users) => users.userid == user?.uid);
-      await _firestore.collection('recordSharing').doc('efg').update(
-          {'currentlySharing': userRecords.map((e) => e.toJson()).toList()});
-      return userRecords;
-    }
-    return [];
-  }
+      // Create an instance of FlutterSecureStorage
+      const storage = FlutterSecureStorage();
 
-  Future<List<UserSharing>> addUserToShared(String code) async {
-    print("hi");
-    print(code);
-    User? user = _auth.currentUser;
-
-    DocumentSnapshot snapshot1 =
-        await _firestore.collection('users').doc(user!.uid).get();
-    DocumentSnapshot snapshot =
-        await _firestore.collection('recordSharing').doc('efg').get();
-    if (snapshot.exists) {
-      var profiles = (snapshot1.data() as Map<String, dynamic>?);
-      UserProfile profile =
-          UserProfile.fromJson(profiles as Map<String, dynamic>);
-      print(profile.name);
-      List<dynamic>? sharedData =
-          (snapshot.data() as Map<String, dynamic>?)?['currentlySharing'];
-      List<UserSharing> userRecords = sharedData!
-          .map((records) =>
-              UserSharing.fromJson(records as Map<String, dynamic>))
-          .toList();
-      int existingIndex =
-          userRecords.indexWhere((users) => users.userid == user.uid);
-      if (existingIndex != -1) {
-       
-        userRecords[existingIndex] =
-            UserSharing(code: code, userid: user.uid, name: profile.name);
-      } else {
-        userRecords
-            .add(UserSharing(code: code, userid: user.uid, name: profile.name));
+      var aesKey = await retrieveAESKey();
+      if (aesKey == null) {
+        print('AES key not found');
+        return [];
       }
-      print(userRecords.length);
 
-      await _firestore.collection('recordSharing').doc('efg').update(
-          {'currentlySharing': userRecords.map((e) => e.toJson()).toList()});
-      return userRecords;
+      final ivString = await storage.read(key: 'iv');
+      if (ivString == null) {
+        print('IV not found');
+        return [];
+      }
+
+      // Decode the IV string from base64
+      final ivBytes = base64.decode(ivString);
+      final iv = encrypt.IV(ivBytes);
+
+      // Use the same AES key and IV to create a decrypter
+      final decrypter = encrypt.Encrypter(encrypt.AES(aesKey, mode: encrypt.AESMode.cbc));
+
+      for (final item in data) {
+        var temp = MedicalRecord.fromJson(item);
+
+        try {
+          // Decrypt the data
+          var decryptedImage = decrypter.decryptBytes(encrypt.Encrypted(temp.data), iv: iv);
+          temp.data = Uint8List.fromList(decryptedImage);
+          records.add(temp);
+        } catch (e) {
+          print('Decryption error for record: $e');
+          continue;  // Skip this record or handle error appropriately
+        }
+      }
+
+      return records;
+    
+      // List<dynamic> sharedData = records['currentlySharing'];  // Assuming the API response contains a 'currentlySharing' field with the list of shared records
+      // return sharedData.map((record) => UserSharing.fromJson(record as Map<String, dynamic>)).toList();
+    
+
+    } catch (e) {
+      print('Failed to verify code and retrieve records: $e');
+    
+      return [];
     }
-    return [];
   }
 }
